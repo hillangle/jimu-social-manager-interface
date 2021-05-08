@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jimu.social.interfaces.mapper.SocialMapper">
+
+    <resultMap id="social" type="com.jimu.social.interfaces.domain.Social">
+        <id column="unid"  property="unid" />
+        <result column="img"  property="img" />
+        <result column="name"  property="name" />
+        <result column="relation"  property="relation" />
+        <result column="status"  property="status" />
+        <result column="create_date"  property="createDate" />
+    </resultMap>
+
+    <select id="querySocialList" resultType="social">
+        select * from t_social
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="img != null and img != ''"> and img = #{img} </if>
+            <if test="name != null and name != ''"> and `name` = #{name} </if>
+            <if test="relation != null and relation != ''"> and relation = #{relation} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+        </where>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from t_social
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="img != null and img != ''"> and img = #{img} </if>
+            <if test="name != null and name != ''"> and `name` = #{name} </if>
+            <if test="relation != null and relation != ''"> and relation = #{relation} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+        </where>
+    </select>
+
+
+    <insert id="save" parameterType="com.jimu.social.interfaces.domain.Social" >
+        <selectKey keyProperty="unid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
+        insert into t_social(
+            `unid`,`img`,`name`,`relation`,`status`,`create_date`
+        ) values(
+            #{unid},#{img},#{name},#{relation},#{status},#{createDate}
+        )
+    </insert>
+
+    <update id="updateSocial" parameterType="com.jimu.social.interfaces.domain.Social">
+        update t_social
+        <set>
+            <if test="img != null and img != ''"> and img = #{img} </if>
+            <if test="name != null and name != ''"> and `name` = #{name} </if>
+            <if test="relation != null and relation != ''"> and relation = #{relation} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+        </set>
+        where unid = #{unid}
+    </update>
+</mapper>

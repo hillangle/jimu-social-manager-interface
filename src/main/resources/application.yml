@@ -1,0 +1,13 @@
+server:
+    port: 8001
+spring:
+    profiles:
+        active: dev
+mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.jimu.social.interfaces.domain
+
+logging:
+    config: classpath:log.xml
+    level:
+        com.lucifer.springboot.cache.mapper: debug
