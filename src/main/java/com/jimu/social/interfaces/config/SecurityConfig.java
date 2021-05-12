@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -41,8 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .csrf().disable()
             .authorizeRequests()
-            // 测试用资源，需要验证了的用户才能访问
+            // 管理后台仅拥有ROLE_SYSUSER权限的用户可以访问
             .antMatchers("/sys/**/**").hasRole("SYSUSER")
+            // 前台小程序仅拥有ROLE_APPUSER权限的用户可以访问
+            .antMatchers("/app/**").hasRole("APPUSER")
             // 其他都放行了
             .anyRequest().permitAll()
             .and()
@@ -60,5 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
         return source;
     }
-
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("index.html","/static/**");
+    }
 }

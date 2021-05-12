@@ -19,6 +19,18 @@
         </where>
     </select>
 
+    <select id="queryUserGroup" resultType="group">
+        select
+        s.*
+        from
+        t_group s
+        left join t_user_group us on s.unid = us.group_unid and us.status = 0 and s.status = 0
+        left join t_user u on us.user_unid = u.unid
+        <where>
+            <if test="account != null and account != ''"> and u.account = #{account} </if>
+        </where>
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from t_group
         <where>
@@ -43,11 +55,11 @@
 
     <update id="updateGroup" parameterType="com.jimu.social.interfaces.domain.Group">
         update t_group
-        <set>
-            <if test="name != null and name != ''"> and `name` = #{name} </if>
-            <if test="status != null and status != ''"> and status = #{status} </if>
-            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
-        </set>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''"> `name` = #{name}, </if>
+            <if test="status != null and status != ''"> status = #{status}, </if>
+            <if test="createDate != null and createDate != ''"> create_date = #{createDate}, </if>
+        </trim>
         where unid = #{unid}
     </update>
 </mapper>

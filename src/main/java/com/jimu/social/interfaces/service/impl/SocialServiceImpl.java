@@ -34,6 +34,16 @@ public class SocialServiceImpl implements ISocialService {
     }
 
     @Override
+    public List<Social> queryUserSocial(Map<String, Object> map) {
+        try {
+            return socialMapper.queryUserSocial(map);
+        } catch(Exception e){
+            log.error("获取社交平台列表失败,失败原因{}",e);
+            return null;
+        }
+    }
+
+    @Override
     public boolean updateSocial(Social social) {
         try{
             socialMapper.updateSocial(social);

@@ -2,9 +2,11 @@ package com.jimu.social.interfaces.domain;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 系统用户表
- * @table t_sys_user
+ * @table t_user
  * @column unid 主键
  * @column user_name 系统用户姓名
  * @column account 系统用户登录名
@@ -30,7 +32,10 @@ public class SysUser {
     public String remark;
     public String status;
     public String createDate;
-    public byte[] img;
+    public String userAttaId;
+
+    public List<Atta> userPhotos;
+    public List<Social> socials;
 
     @Override
     public String toString() {
@@ -44,6 +49,8 @@ public class SysUser {
             ", birthday='" + birthday + '\'' +
             ", remark='" + remark + '\'' +
             ", status='" + status + '\'' +
+            ", socials='" + socials + '\'' +
+            ", userPhotos='" + userPhotos + '\'' +
             ", createDate='" + createDate + '\'' +'}';
     }
 

@@ -14,17 +14,44 @@
         <result column="remark"  property="remark" />
         <result column="status"  property="status" />
         <result column="create_date"  property="createDate" />
-        <result column="img"  property="img" />
     </resultMap>
+
+    <resultMap id="appUserInfo" type="com.jimu.social.interfaces.domain.SysUser">
+        <id column="unid"  property="unid" />
+        <result column="user_name"  property="userName" />
+        <result column="account"  property="account" />
+        <result column="password"  property="password" />
+        <result column="user_role"  property="userRole" />
+        <result column="sex"  property="sex" />
+        <result column="telphone"  property="telphone" />
+        <result column="birthday"  property="birthday" />
+        <result column="remark"  property="remark" />
+        <result column="status"  property="status" />
+        <result column="create_date"  property="createDate" />
+
+        <collection property="userPhotos" ofType="com.jimu.social.interfaces.dto.UserPhoto">
+            <result column="atta_name"  property="attaName" />
+            <result column="atta_type"  property="attaType" />
+            <result column="atta_path"  property="attaPath" />
+            <result column="file_type"  property="fileType" />
+        </collection>
+
+        <collection property="socials" ofType="com.jimu.social.interfaces.domain.Social">
+            <result column="img"  property="img" />
+            <result column="socialName"  property="name" />
+            <result column="relation"  property="relation" />
+        </collection>
+    </resultMap>
+
     <select id="queryUserByAccount" resultMap="sysUser">
-        select * from t_sys_user
+        select * from t_user
         <where>
             <if test="account != null and account != ''"> and account = #{account} </if>
         </where>
     </select>
 
     <select id="queryUserList" resultMap="sysUser">
-        select * from t_sys_user
+        select * from t_user
         <where>
             <if test="unid != null and unid != ''"> and unid = #{unid} </if>
             <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
@@ -41,7 +68,7 @@
     </select>
 
     <select id="count" resultType="int">
-        select count(*) from t_sys_user
+        select count(*) from t_user
         <where>
             <if test="unid != null and unid != ''"> and unid = #{unid} </if>
             <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
@@ -57,8 +84,8 @@
         </where>
     </select>
 
-    <insert id="saveSysUser" parameterType="com.jimu.social.interfaces.domain.SysUser" >
-        insert into t_sys_user(
+    <insert id="saveSysUser" parameterType="com.jimu.social.interfaces.domain.SysUser" useGeneratedKeys="true" keyProperty="unid">
+        insert into t_user(
             `user_name`,`account`,`password`,`user_role`,`sex`,`telphone`,`birthday`,`remark`,`status`,`create_date`
         ) values(
             #{userName},#{account},#{password},#{userRole},#{sex},#{telphone},#{birthday},#{remark},#{status},#{createDate}
@@ -66,7 +93,7 @@
     </insert>
 
     <update id="updateSysUser" parameterType="com.jimu.social.interfaces.domain.SysUser">
-        update t_sys_user
+        update t_user
         <trim prefix="set" suffixOverrides=",">
             <if test="userName != null and userName != ''"> user_name = #{userName}, </if>
             <if test="account != null and account != ''"> account = #{account}, </if>
@@ -81,4 +108,31 @@
         </trim>
         where unid = #{unid}
     </update>
+
+    <select id="queryUserInfo" resultMap="appUserInfo">
+        select
+               u.*,
+               a.*,
+               ua.atta_type as file_type,
+               s.*
+        from
+            t_user u
+                left join t_user_atta ua on u.unid = ua.user_unid and ua.status = 0
+                left join t_atta a on ua.atta_unid = a.unid and a.status = 0
+                left join t_user_social us on u.unid = us.user_unid and us.status = 0
+                left join t_social s on us.social_unid = s.unid and s.status = 0
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+            <if test="account != null and account != ''"> and account = #{account} </if>
+            <if test="password != null and password != ''"> and password = #{password} </if>
+            <if test="userRole != null and userRole != ''"> and user_role = #{userRole} </if>
+            <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+            <if test="telphone != null and telphone != ''"> and telphone = #{telphone} </if>
+            <if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
+            <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+        </where>
+    </select>
 </mapper>

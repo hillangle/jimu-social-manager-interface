@@ -9,4 +9,12 @@ public class Result {
     public String resultData;
     public int httpCode;
 
+    public String toJSONString() {
+        return "{" +
+                "\"resultCode\":\"" + resultCode + "\"" +
+                ", \"resultMsg\":\"" + resultMsg + "\"" +
+                ", \"resultData\":\"" + resultData + "\"" +
+                ", \"httpCode\":\"" + httpCode + "\"" +
+                "}";
+    }
 }

@@ -48,9 +48,33 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     @Override
+    public SysUser queryUserByAccount(String s) {
+        try {
+            SysUser sysUser = sysUserMapper.queryUserByAccount(s);
+            if (sysUser == null) {
+                return null;
+            }
+            return sysUser;
+        } catch(Exception e){
+            log.error("根据用户名获取用户信息失败,失败原因:{}",e);
+            return null;
+        }
+    }
+
+    @Override
     public List<SysUser> queryUserList(Map<String, Object> map) {
         try{
             return sysUserMapper.queryUserList(map);
+        }catch(Exception e){
+            log.error("根据用户角色获取用户分页列表失败,失败原因:{}",e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<SysUser> queryUserInfo(Map<String, Object> map) {
+        try{
+            return sysUserMapper.queryUserInfo(map);
         }catch(Exception e){
             log.error("根据用户角色获取用户分页列表失败,失败原因:{}",e);
             return null;

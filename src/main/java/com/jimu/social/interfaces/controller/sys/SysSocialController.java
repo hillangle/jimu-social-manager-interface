@@ -2,6 +2,7 @@ package com.jimu.social.interfaces.controller.sys;
 
 import com.jimu.social.interfaces.domain.Social;
 import com.jimu.social.interfaces.service.ISocialService;
+import com.jimu.social.interfaces.utils.DateUtils;
 import com.jimu.social.interfaces.utils.PageUtils;
 import com.jimu.social.interfaces.utils.Query;
 import com.jimu.social.interfaces.utils.ResultUtils;
@@ -35,6 +36,7 @@ public class SysSocialController {
     @PreAuthorize("hasRole('SYSUSER')")
     public ResultUtils addSocial(Social social){
         try{
+            social.setCreateDate(DateUtils.getDateByString());
             socialService.save(social);
             return ResultUtils.ok("社交平台添加成功");
         } catch (Exception e){

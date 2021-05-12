@@ -22,6 +22,13 @@ public interface GroupMapper {
     List<Group> queryGroupList(Map<String, Object> map);
 
     /**
+     * 根据用户登录名获取关联兴趣小组列表
+     * @param map
+     * @return Tendency
+     */
+    List<Group> queryUserGroup(Map<String, Object> map);
+
+    /**
      * 社交平台信息修改
      * @param group
      * @return flag

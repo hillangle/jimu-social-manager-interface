@@ -34,6 +34,16 @@ public class GroupServiceImpl implements IGroupService {
     }
 
     @Override
+    public List<Group> queryUserGroup(Map<String, Object> map) {
+        try {
+            return groupMapper.queryUserGroup(map);
+        } catch(Exception e){
+            log.error("获取兴趣小组列表失败,失败原因{}",e);
+            return null;
+        }
+    }
+
+    @Override
     public boolean updateGroup(Group group) {
         try{
             groupMapper.updateGroup(group);

@@ -8,29 +8,36 @@ import java.util.Map;
 public interface ISocialService {
 
     /**
-     * 动态发布
+     * 平台新增
      * @return
      */
     public void save(Social social);
 
     /**
-     * 获取动态分页列表
+     * 获取平台分页列表
      * @param map
      * @return Tendency
      */
     List<Social> querySocialList(Map<String, Object> map);
 
     /**
-     * 动态信息修改
+     * 根据登录用户获取绑定平台列表
+     * @param map
+     * @return Tendency
+     */
+    List<Social> queryUserSocial(Map<String, Object> map);
+
+    /**
+     * 平台信息修改
      * @param social
      * @return flag
      */
     boolean updateSocial(Social social);
 
     /**
-     * 获取动态分页列表总数
+     * 获取平台分页列表总数
      * @param map
-     * @return Tendency
+     * @return Social
      */
     int count(Map<String, Object> map);
 }

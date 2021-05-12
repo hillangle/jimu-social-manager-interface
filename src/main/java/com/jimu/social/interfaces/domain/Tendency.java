@@ -2,6 +2,8 @@ package com.jimu.social.interfaces.domain;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 动态表
  * @table t_tendency
@@ -21,4 +23,20 @@ public class Tendency {
     public String status;
     public String createDate;
 
+    public SysUser user;
+
+    public Group group;
+
+    public List<Atta> attas;
+
+    @Override
+    public String toString() {
+        return "Tendency{ unid=" + unid +
+                ", user='" + user + '\'' +
+                ", group='" + group + '\'' +
+                ", content='" + content + '\'' +
+                ", attas='" + attas + '\'' +
+                ", status='" + status + '\'' +
+                ", createDate='" + createDate + '\'' +'}';
+    }
 }

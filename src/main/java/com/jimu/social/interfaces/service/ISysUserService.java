@@ -23,6 +23,12 @@ public interface ISysUserService extends UserDetailsService {
     UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
 
     /**
+     * 根据用户名获取用户信息用户
+     * @return
+     */
+    SysUser queryUserByAccount(String s);
+
+    /**
      * 根据用户角色获取用户分页列表
      * @param map
      * @return SysUser
@@ -30,8 +36,15 @@ public interface ISysUserService extends UserDetailsService {
     List<SysUser> queryUserList(Map<String, Object> map);
 
     /**
+     * 根据用户名获取用户相关信息
+     * @param map
+     * @return SysUser
+     */
+    List<SysUser> queryUserInfo(Map<String, Object> map);
+
+    /**
      * 用户信息修改
-     * @param sysUser
+     * @param map
      * @return flag
      */
     boolean updateSysUser(Map<String, Object> map);
@@ -42,4 +55,5 @@ public interface ISysUserService extends UserDetailsService {
      * @return SysUser
      */
     int count(Map<String, Object> map);
+
 }

@@ -3,6 +3,7 @@ package com.jimu.social.interfaces.controller.sys;
 import com.jimu.social.interfaces.domain.Group;
 import com.jimu.social.interfaces.domain.Social;
 import com.jimu.social.interfaces.service.IGroupService;
+import com.jimu.social.interfaces.utils.DateUtils;
 import com.jimu.social.interfaces.utils.PageUtils;
 import com.jimu.social.interfaces.utils.Query;
 import com.jimu.social.interfaces.utils.ResultUtils;
@@ -36,6 +37,7 @@ public class SysGroupController {
     @PreAuthorize("hasRole('SYSUSER')")
     public ResultUtils addGroup(Group group){
         try{
+            group.setCreateDate(DateUtils.getDateByString());
             groupService.save(group);
             return ResultUtils.ok("兴趣小组添加成功");
         } catch (Exception e){

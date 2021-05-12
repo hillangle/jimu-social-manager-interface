@@ -23,6 +23,18 @@
         </where>
     </select>
 
+    <select id="queryUserSocial" resultType="social">
+        select
+               s.*
+        from
+             t_social s
+                left join t_user_social us on s.unid = us.social_unid and us.status = 0 and s.status = 0
+                left join t_user u on us.user_unid = u.unid
+        <where>
+            <if test="account != null and account != ''"> and u.account = #{account} </if>
+        </where>
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from t_social
         <where>
@@ -49,13 +61,13 @@
 
     <update id="updateSocial" parameterType="com.jimu.social.interfaces.domain.Social">
         update t_social
-        <set>
-            <if test="img != null and img != ''"> and img = #{img} </if>
-            <if test="name != null and name != ''"> and `name` = #{name} </if>
-            <if test="relation != null and relation != ''"> and relation = #{relation} </if>
-            <if test="status != null and status != ''"> and status = #{status} </if>
-            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
-        </set>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="img != null and img != ''">img = #{img}, </if>
+            <if test="name != null and name != ''">`name` = #{name}, </if>
+            <if test="relation != null and relation != ''">relation = #{relation}, </if>
+            <if test="status != null and status != ''">status = #{status}, </if>
+            <if test="createDate != null and createDate != ''">create_date = #{createDate}, </if>
+        </trim>
         where unid = #{unid}
     </update>
 </mapper>

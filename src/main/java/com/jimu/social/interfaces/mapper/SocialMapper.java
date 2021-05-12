@@ -22,6 +22,13 @@ public interface SocialMapper {
     List<Social> querySocialList(Map<String, Object> map);
 
     /**
+     * 根据登录用户获取绑定平台列表
+     * @param map
+     * @return Tendency
+     */
+    List<Social> queryUserSocial(Map<String, Object> map);
+
+    /**
      * 社交平台信息修改
      * @param social
      * @return flag
