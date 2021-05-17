@@ -19,6 +19,8 @@ public class Activity {
     public String unid;
     public byte[] img;
     public String name;
+    public String content;
+    public String address;
     public String startTime;
     public String endTime;
     public String activeTime;

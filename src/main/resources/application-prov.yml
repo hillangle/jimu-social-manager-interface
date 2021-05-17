@@ -27,4 +27,4 @@ spring:
         # 合并多个DruidDataSource的监控数据
         #useGlobalDataSourceStat: true
 basic:
-    fileBasicPath: /app/jimu_uniapp/logs
+    fileBasicPath: /app/jimu_uniapp/files

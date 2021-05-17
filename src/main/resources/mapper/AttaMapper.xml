@@ -18,19 +18,25 @@
         </where>
     </select>
 
-    <insert id="save" parameterType="com.jimu.social.interfaces.domain.Atta" useGeneratedKeys="true" keyProperty="unid">
+    <insert id="save" parameterType="com.jimu.social.interfaces.domain.Atta" useGeneratedKeys="true" keyProperty="attaUnid">
+        <selectKey keyProperty="attaUnid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
         insert into t_atta(
-            `atta_name`,`atta_type`,`atta_path`,`status`,`create_date`
+            `unid`,`atta_name`,`atta_type`,`atta_path`,`status`,`create_date`
         ) values(
-            #{attaName},#{attaType},#{attaPath},#{status},#{createDate}
+            #{attaUnid},#{attaName},#{attaType},#{attaPath},#{status},#{createDate}
         )
     </insert>
 
     <insert id="saveUserAtta" parameterType="com.jimu.social.interfaces.domain.UserAtta" useGeneratedKeys="true" keyProperty="unid">
+        <selectKey keyProperty="unid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
         insert into t_user_atta(
-            `atta_unid`,`user_unid`,`atta_type`,`status`,`create_date`
+            `unid`,`atta_unid`,`user_unid`,`atta_type`,`status`,`create_date`
         ) values(
-            #{attaUnid},#{userUnid},#{attaType},#{status},#{createDate}
+            #{unid},#{attaUnid},#{userUnid},#{attaType},#{status},#{createDate}
         )
     </insert>
 

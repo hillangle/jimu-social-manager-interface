@@ -6,6 +6,8 @@
         <id column="unid"  property="unid" />
         <result column="img"  property="img" />
         <result column="name"  property="name" />
+        <result column="content"  property="content" />
+        <result column="address"  property="address" />
         <result column="start_time"  property="startTime" />
         <result column="end_time"  property="endTime" />
         <result column="active_time"  property="activeTime" />
@@ -22,6 +24,8 @@
             <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
             <if test="activeTime != null and activeTime != ''"> and active_time = #{activeTime} </if>
             <if test="name != null and name != ''"> and `name` = #{name} </if>
+            <if test="content != null and content != ''"> and `content` = #{content} </if>
+            <if test="address != null and address != ''"> and `address` = #{address} </if>
             <if test="status != null and status != ''"> and status = #{status} </if>
             <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
         </where>
@@ -36,6 +40,8 @@
             <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
             <if test="activeTime != null and activeTime != ''"> and active_time = #{activeTime} </if>
             <if test="name != null and name != ''"> and `name` = #{name} </if>
+            <if test="content != null and content != ''"> and `name` = #{content} </if>
+            <if test="address != null and address != ''"> and `address` = #{address} </if>
             <if test="status != null and status != ''"> and status = #{status} </if>
             <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
         </where>
@@ -47,23 +53,25 @@
             SELECT REPLACE(UUID(),'-','') FROM DUAL
         </selectKey>
         insert into t_activity(
-            `unid`,`img`,`start_time`,`end_time`,`activity_time`,`name`,`status`,`create_date`
+            `unid`,`img`,`start_time`,`end_time`,`activity_time`,`name`,`content`,`address`,`status`,`create_date`
         ) values(
-            #{unid},#{img},#{startTime},#{endTime},#{activeTime},#{name},#{status},#{createDate}
+            #{unid},#{img},#{startTime},#{endTime},#{activeTime},#{name},#{content},#{address},#{status},#{createDate}
         )
     </insert>
 
     <update id="updateActivity" parameterType="com.jimu.social.interfaces.domain.Activity">
         update t_activity
-        <set>
-            <if test="img != null and img != ''"> and img = #{img} </if>
-            <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
-            <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
-            <if test="activeTime != null and activeTime != ''"> and active_time = #{activeTime} </if>
-            <if test="name != null and name != ''"> and `name` = #{name} </if>
-            <if test="status != null and status != ''"> and status = #{status} </if>
-            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
-        </set>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="img != null and img != ''"> img = #{img}, </if>
+            <if test="startTime != null and startTime != ''"> start_time = #{startTime}, </if>
+            <if test="endTime != null and endTime != ''"> end_time = #{endTime}, </if>
+            <if test="activeTime != null and activeTime != ''"> active_time = #{activeTime}, </if>
+            <if test="name != null and name != ''"> `name` = #{name}, </if>
+            <if test="content != null and content != ''"> `content` = #{content}, </if>
+            <if test="address != null and address != ''"> `address` = #{address}, </if>
+            <if test="status != null and status != ''"> status = #{status}, </if>
+            <if test="createDate != null and createDate != ''"> create_date = #{createDate}, </if>
+        </trim>
         where unid = #{unid}
     </update>
 </mapper>

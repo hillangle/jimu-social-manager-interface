@@ -33,7 +33,7 @@ public class SysActivityController {
 
     @PostMapping("/addActivity")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils addActivity(Activity activity){
+    public ResultUtils addActivity(@RequestBody Activity activity){
         try{
             activityService.save(activity);
             return ResultUtils.ok("活动添加成功");
@@ -45,7 +45,7 @@ public class SysActivityController {
 
     @PostMapping("/updateActivityForStatus")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils updateActivityForStatus(Activity activity){
+    public ResultUtils updateActivityForStatus(@RequestBody Activity activity){
         try{
             activityService.updateActivity(activity);
             return ResultUtils.ok("活动状态修改成功");

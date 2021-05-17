@@ -14,6 +14,16 @@ import lombok.Data;
 public class Group {
     public String unid;
     public String name;
+    public byte[] img;
     public String status;
     public String createDate;
+
+    @Override
+    public String toString() {
+        return "Group{ unid=" + unid +
+                ", name='" + name + '\'' +
+                ", img='" + img + '\'' +
+                ", status='" + status + '\'' +
+                ", createDate='" + createDate + '\'' +'}';
+    }
 }

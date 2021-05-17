@@ -2,6 +2,7 @@ package com.jimu.social.interfaces.mapper;
 
 import com.jimu.social.interfaces.domain.Activity;
 import com.jimu.social.interfaces.domain.Atta;
+import com.jimu.social.interfaces.domain.UserAtta;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,12 +13,12 @@ public interface AttaMapper {
     /**
      * 文件上传
      */
-    public void save(Map<String, Object> map);
+    public void save(Atta map);
 
     /**
      * 用户文件关联
      */
-    public void saveUserAtta(Map<String, Object> map);
+    public void saveUserAtta(UserAtta userAtta);
 
     /**
      * 修改附件

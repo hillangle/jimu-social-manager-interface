@@ -1,6 +1,7 @@
 package com.jimu.social.interfaces.mapper;
 
 import com.jimu.social.interfaces.domain.Social;
+import com.jimu.social.interfaces.domain.UserSocial;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,6 +14,12 @@ public interface SocialMapper {
      * @return
      */
     public void save(Social social);
+
+    /**
+     * 用户关联社交平台发布
+     * @return
+     */
+    public void saveUserSocial(UserSocial userSocial);
 
     /**
      * 获取社交平台分页列表
@@ -34,6 +41,13 @@ public interface SocialMapper {
      * @return flag
      */
     boolean updateSocial(Social social);
+
+    /**
+     * 社交平台信息修改
+     * @param userSocial
+     * @return flag
+     */
+    boolean updateUserSocial(UserSocial userSocial);
 
     /**
      * 获取社交平台分页列表总数

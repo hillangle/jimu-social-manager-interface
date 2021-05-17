@@ -1,6 +1,7 @@
 package com.jimu.social.interfaces.service.impl;
 
 import com.jimu.social.interfaces.domain.Social;
+import com.jimu.social.interfaces.domain.UserSocial;
 import com.jimu.social.interfaces.mapper.SocialMapper;
 import com.jimu.social.interfaces.service.ISocialService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,11 @@ public class SocialServiceImpl implements ISocialService {
     @Override
     public void save(Social social) {
         socialMapper.save(social);
+    }
+
+    @Override
+    public void saveUserSocial(UserSocial userSocial) {
+        socialMapper.saveUserSocial(userSocial);
     }
 
     @Override
@@ -47,6 +53,17 @@ public class SocialServiceImpl implements ISocialService {
     public boolean updateSocial(Social social) {
         try{
             socialMapper.updateSocial(social);
+            return true;
+        }catch(Exception e) {
+            log.error("修改社交平台信息失败,失败原因{}",e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateUserSocial(UserSocial userSocial) {
+        try{
+            socialMapper.updateUserSocial(userSocial);
             return true;
         }catch(Exception e) {
             log.error("修改社交平台信息失败,失败原因{}",e);

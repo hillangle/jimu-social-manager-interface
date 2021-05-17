@@ -1,6 +1,7 @@
 package com.jimu.social.interfaces.service;
 
 import com.jimu.social.interfaces.domain.Social;
+import com.jimu.social.interfaces.domain.UserSocial;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,12 @@ public interface ISocialService {
      * @return
      */
     public void save(Social social);
+
+     /**
+     * 用户关联平台新增
+     * @return
+     */
+    public void saveUserSocial(UserSocial userSocial);
 
     /**
      * 获取平台分页列表
@@ -33,6 +40,13 @@ public interface ISocialService {
      * @return flag
      */
     boolean updateSocial(Social social);
+
+    /**
+     * 平台信息修改
+     * @param social
+     * @return flag
+     */
+    boolean updateUserSocial(UserSocial userSocial);
 
     /**
      * 获取平台分页列表总数
