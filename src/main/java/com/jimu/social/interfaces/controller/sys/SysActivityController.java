@@ -33,7 +33,7 @@ public class SysActivityController {
 
     @PostMapping("/addActivity")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils addActivity(@RequestBody Activity activity){
+    public ResultUtils addActivity(Activity activity){
         try{
             activityService.save(activity);
             return ResultUtils.ok("活动添加成功");

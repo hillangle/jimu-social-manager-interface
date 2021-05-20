@@ -53,7 +53,7 @@
             SELECT REPLACE(UUID(),'-','') FROM DUAL
         </selectKey>
         insert into t_activity(
-            `unid`,`img`,`start_time`,`end_time`,`activity_time`,`name`,`content`,`address`,`status`,`create_date`
+            `unid`,`img`,`start_time`,`end_time`,`active_time`,`name`,`content`,`address`,`status`,`create_date`
         ) values(
             #{unid},#{img},#{startTime},#{endTime},#{activeTime},#{name},#{content},#{address},#{status},#{createDate}
         )
