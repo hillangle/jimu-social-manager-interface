@@ -2,6 +2,7 @@ package com.jimu.social.interfaces.controller.sys;
 
 import com.jimu.social.interfaces.domain.Activity;
 import com.jimu.social.interfaces.service.IActivityService;
+import com.jimu.social.interfaces.utils.DateUtils;
 import com.jimu.social.interfaces.utils.PageUtils;
 import com.jimu.social.interfaces.utils.Query;
 import com.jimu.social.interfaces.utils.ResultUtils;
@@ -33,8 +34,12 @@ public class SysActivityController {
 
     @PostMapping("/addActivity")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils addActivity(Activity activity){
+    public ResultUtils addActivity(@RequestBody Activity activity){
         try{
+//            activity.setActiveTime(DateUtils.getOkDate(activity.getActiveTime()));
+//            activity.setStartTime(DateUtils.getOkDate(activity.getStartTime()));
+//            activity.setEndTime(DateUtils.getOkDate(activity.getEndTime()));
+            activity.setCreateDate(DateUtils.getDateByString());
             activityService.save(activity);
             return ResultUtils.ok("活动添加成功");
         } catch (Exception e){

@@ -2,6 +2,7 @@ package com.jimu.social.interfaces.service;
 
 
 import com.jimu.social.interfaces.domain.Atta;
+import com.jimu.social.interfaces.domain.TendencyAtta;
 import com.jimu.social.interfaces.domain.UserAtta;
 
 import java.util.List;
@@ -28,4 +29,9 @@ public interface IAttaService {
      * 根据用户id查询关联附件
      */
     public List<Atta> queryAttaByUserId(Map<String, Object> map);
+
+    /**
+     * 动态文件关联
+     */
+    public void saveTendencyAtta(TendencyAtta tendencyAtta);
 }

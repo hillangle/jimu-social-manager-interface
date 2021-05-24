@@ -51,4 +51,15 @@
         </trim>
         where unid = #{unid}
     </update>
+
+    <insert id="saveTendencyAtta" parameterType="com.jimu.social.interfaces.domain.TendencyAtta" useGeneratedKeys="true" keyProperty="unid">
+        <selectKey keyProperty="unid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
+        insert into t_tendency_atta(
+        `unid`,`tendency_id`,`atta_id`,`status`,`create_date`
+        ) values(
+        #{unid},#{tendencyId},#{attaId},#{status},#{createDate}
+        )
+    </insert>
 </mapper>

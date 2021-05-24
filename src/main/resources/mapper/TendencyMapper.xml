@@ -11,6 +11,52 @@
         <result column="create_date"  property="createDate" />
     </resultMap>
 
+    <resultMap id="tendencyInfo" type="com.jimu.social.interfaces.domain.Tendency">
+        <id column="unid"  property="unid" />
+        <result column="user_id"  property="userId" />
+        <result column="group_id"  property="groupId" />
+        <result column="content"  property="content" />
+        <result column="status"  property="status" />
+        <result column="create_date"  property="createDate" />
+
+        <association property="user" javaType="com.jimu.social.interfaces.domain.SysUser">
+            <result column="user_name"  property="userName" />
+            <result column="birthday"  property="birthday" />
+
+            <collection property="userPhotos" ofType="com.jimu.social.interfaces.dto.UserPhoto">
+                <result column="user_atta_name"  property="attaName" />
+                <result column="user_atta_path"  property="attaPath" />
+            </collection>
+        </association>
+
+        <association property="tendencyUserZan" javaType="com.jimu.social.interfaces.domain.TendencyUserZan">
+            <result column="zan_unid"  property="unid" />
+        </association>
+
+        <collection property="attas" ofType="com.jimu.social.interfaces.domain.Atta">
+            <result column="atta_name"  property="attaName" />
+            <result column="atta_path"  property="attaPath" />
+        </collection>
+
+        <collection property="discusses" ofType="com.jimu.social.interfaces.domain.Discuss">
+            <result column="discusses_content"  property="content" />
+
+            <association property="user" javaType="com.jimu.social.interfaces.domain.SysUser">
+                <result column="dicuss_user_name"  property="userName" />
+
+                <collection property="userPhotos" ofType="com.jimu.social.interfaces.dto.UserPhoto">
+                    <result column="dicuss_user_atta_name"  property="attaName" />
+                    <result column="dicuss_user_atta_path"  property="attaPath" />
+                </collection>
+            </association>
+        </collection>
+
+        <collection property="tendencyUserZans" ofType="com.jimu.social.interfaces.domain.TendencyUserZan">
+            <result column="zans_unid"  property="unid" />
+        </collection>
+
+    </resultMap>
+
     <select id="queryTendencyList" resultMap="tendency">
         select * from t_tendency
         <where>
@@ -35,6 +81,45 @@
         </where>
     </select>
 
+    <select id="queryAllTendencyList" resultMap="tendencyInfo">
+        select
+            t.*,
+            u.user_name,
+            u.birthday,
+            tendencyAtta.atta_name,
+            tendencyAtta.atta_path,
+            userAtta.atta_name as user_atta_name,
+            userAtta.atta_path as user_atta_path,
+            d.content as discusses_content,
+            discussUser.user_name as dicuss_user_name,
+            discussAtta.atta_name as dicuss_user_atta_name,
+            discussAtta.atta_path as dicuss_user_atta_path,
+            zan.unid as zan_unid,
+            zans.unid as zans_unid
+        from
+            t_tendency t
+            left join t_user u on t.user_id = u.unid and u.status = '0'
+            left join t_user_atta ua on u.unid = ua.user_unid and ua.status = 0 and ua.atta_type = '0'
+            left join t_atta userAtta on ua.atta_unid = userAtta.unid and userAtta.status = '0'
+            left join t_tendency_atta ta on t.unid = ta.tendency_id and ta.status = '0'
+            left join t_atta tendencyAtta on ta.atta_id = tendencyAtta.unid and tendencyAtta.status = '0'
+
+            left join t_discuss d on t.unid = d.tendency_id and d.status = '0'
+            left join t_user discussUser on d.user_id = discussUser.unid and discussUser.status = '0'
+            left join t_user_atta discussUserAtta on discussUser.unid = discussUserAtta.user_unid and discussUserAtta.status = 0 and discussUserAtta.atta_type = '0'
+            left join t_atta discussAtta on discussUserAtta.atta_unid = discussAtta.unid and discussUserAtta.status = '0'
+            left join t_tendency_user_zan zan on zan.user_id = u.unid and zan.status = '0'
+            left join t_tendency_user_zan zans on zans.tendency_id = t.unid and zan.status = '0'
+        <where>
+            <if test="unid != null and unid != ''"> and t.unid = #{unid} </if>
+            <if test="userId != null and userId != ''"> and t.user_id = #{userId} </if>
+            <if test="groupId != null and groupId != ''"> and t.group_id = #{groupId} </if>
+            <if test="content != null and content != ''"> and t.content = #{content} </if>
+            <if test="status != null and status != ''"> and t.status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and t.create_date = #{createDate} </if>
+        </where>
+        order by t.create_date desc
+    </select>
 
     <insert id="save" parameterType="com.jimu.social.interfaces.domain.Tendency" >
         <selectKey keyProperty="unid" resultType="string" order="BEFORE">
@@ -49,14 +134,56 @@
 
     <update id="updateTendency" parameterType="com.jimu.social.interfaces.domain.Tendency">
         update t_tendency
-        <set>
-            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
-            <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
-            <if test="groupId != null and groupId != ''"> and group_id = #{groupId} </if>
-            <if test="content != null and content != ''"> and content = #{content} </if>
-            <if test="status != null and status != ''"> and status = #{status} </if>
-            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
-        </set>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="unid != null and unid != ''"> unid = #{unid}, </if>
+            <if test="userId != null and userId != ''"> user_id = #{userId}, </if>
+            <if test="groupId != null and groupId != ''"> group_id = #{groupId}, </if>
+            <if test="content != null and content != ''"> content = #{content}, </if>
+            <if test="status != null and status != ''"> status = #{status}, </if>
+            <if test="createDate != null and createDate != ''"> create_date = #{createDate}, </if>
+        </trim>
         where unid = #{unid}
     </update>
+
+    <insert id="saveZan" parameterType="com.jimu.social.interfaces.domain.TendencyUserZan" >
+        <selectKey keyProperty="unid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
+        insert into t_tendency_user_zan(
+        `unid`,`user_id`,`tendency_id`,`status`,`create_date`
+        ) values(
+        #{unid},#{userId},#{tendencyId},#{status},#{createDate}
+        )
+    </insert>
+
+    <insert id="savePl" parameterType="com.jimu.social.interfaces.domain.Discuss" >
+        <selectKey keyProperty="unid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
+        insert into t_discuss(
+        `unid`,`user_id`,`tendency_id`,`content`,`status`,`create_date`
+        ) values(
+        #{unid},#{userId},#{tendencyId},#{content},#{status},#{createDate}
+        )
+    </insert>
+
+    <update id="updateZan" parameterType="com.jimu.social.interfaces.domain.TendencyUserZan">
+        update t_tendency_user_zan
+        <trim prefix="set" suffixOverrides=",">
+            <if test="unid != null and unid != ''"> unid = #{unid}, </if>
+            <if test="userId != null and userId != ''"> user_id = #{userId}, </if>
+            <if test="tendencyId != null and tendencyId != ''"> tendency_id = #{tendencyId}, </if>
+            <if test="status != null and status != ''"> status = #{status}, </if>
+        </trim>
+        where unid = #{unid}
+    </update>
+
+    <select id="queryZanByUserId" resultType="com.jimu.social.interfaces.domain.TendencyUserZan">
+        select * from t_tendency_user_zan
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+            <if test="tendencyId != null and tendencyId != ''"> and tendency_id = #{tendencyId} </if>
+        </where>
+    </select>
 </mapper>

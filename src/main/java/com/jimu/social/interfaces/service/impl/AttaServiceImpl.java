@@ -1,6 +1,7 @@
 package com.jimu.social.interfaces.service.impl;
 
 import com.jimu.social.interfaces.domain.Atta;
+import com.jimu.social.interfaces.domain.TendencyAtta;
 import com.jimu.social.interfaces.domain.UserAtta;
 import com.jimu.social.interfaces.mapper.AttaMapper;
 import com.jimu.social.interfaces.service.IAttaService;
@@ -38,5 +39,9 @@ public class AttaServiceImpl implements IAttaService {
     @Override
     public List<Atta> queryAttaByUserId(Map<String, Object> map) {
         return attaMapper.queryAttaByUserId(map);
+    }
+
+    public void saveTendencyAtta(TendencyAtta tendencyAtta){
+        attaMapper.saveTendencyAtta(tendencyAtta);
     }
 }

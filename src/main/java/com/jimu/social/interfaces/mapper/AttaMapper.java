@@ -2,6 +2,7 @@ package com.jimu.social.interfaces.mapper;
 
 import com.jimu.social.interfaces.domain.Activity;
 import com.jimu.social.interfaces.domain.Atta;
+import com.jimu.social.interfaces.domain.TendencyAtta;
 import com.jimu.social.interfaces.domain.UserAtta;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,4 +30,9 @@ public interface AttaMapper {
      * 根据用户id查询关联附件
      */
     public List<Atta> queryAttaByUserId(Map<String, Object> map);
+
+    /**
+     * 动态文件关联
+     */
+    public void saveTendencyAtta(TendencyAtta tendencyAtta);
 }
