@@ -20,15 +20,29 @@
         </where>
     </select>
 
-    <select id="queryUserGroup" resultType="group">
+    <select id="queryGroupListWithUserCount" resultType="com.jimu.social.interfaces.dto.GroupDto">
         select
-        s.*
+            g.*,(select count(1) from t_user_group b where b.group_id = g.unid and b.status = '0') as count
         from
-        t_group s
-        left join t_user_group us on s.unid = us.group_id and us.status = 0 and s.status = 0
-        left join t_user u on us.user_id = u.unid
+             t_group g
+        <where>
+            <if test="unid != null and unid != ''"> and g.unid = #{unid} </if>
+            <if test="name != null and name != ''"> and g.`name` = #{name} </if>
+            <if test="status != null and status != ''"> and g.status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and g.create_date = #{createDate} </if>
+        </where>
+    </select>
+
+    <select id="queryUserGroup" resultType="com.jimu.social.interfaces.dto.GroupDto">
+        select
+            s.*,(select count(1) from t_user_group b where b.group_id = s.unid and b.status = '0') as count
+        from
+            t_group s
+            left join t_user_group us on s.unid = us.group_id and us.status = 0 and s.status = 0
+            left join t_user u on us.user_id = u.unid
         <where>
             <if test="account != null and account != ''"> and u.account = #{account} </if>
+            and s.status = '0'
         </where>
     </select>
 
@@ -59,6 +73,40 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="name != null and name != ''"> `name` = #{name}, </if>
             <if test="img != null and img != ''"> `img` = #{img}, </if>
+            <if test="status != null and status != ''"> status = #{status}, </if>
+            <if test="createDate != null and createDate != ''"> create_date = #{createDate}, </if>
+        </trim>
+        where unid = #{unid}
+    </update>
+
+    <select id="queryUserGroupRelation" parameterType="com.jimu.social.interfaces.domain.UserGroup" resultType="com.jimu.social.interfaces.domain.UserGroup">
+        select
+            *
+        from
+            t_user_group us
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+            <if test="groupId != null and groupId != ''"> and group_id = #{groupId} </if>
+        </where>
+    </select>
+
+    <insert id="saveUserGroup" parameterType="com.jimu.social.interfaces.domain.UserGroup" >
+        <selectKey keyProperty="unid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
+        insert into t_user_group(
+        `unid`,`user_id`,`group_id`,`status`,`create_date`
+        ) values(
+        #{unid},#{userId},#{groupId},#{status},#{createDate}
+        )
+    </insert>
+
+    <update id="updateUserGroup" parameterType="com.jimu.social.interfaces.domain.UserGroup">
+        update t_user_group
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userId != null and userId != ''"> `user_id` = #{userId}, </if>
+            <if test="groupId != null and groupId != ''"> `group_id` = #{groupId}, </if>
             <if test="status != null and status != ''"> status = #{status}, </if>
             <if test="createDate != null and createDate != ''"> create_date = #{createDate}, </if>
         </trim>
