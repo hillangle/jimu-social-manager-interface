@@ -11,16 +11,7 @@
         <result column="modify_date"  property="modifyDate" />
     </resultMap>
 
-    <resultMap id="userNotic" type="com.jimu.social.interfaces.domain.Notic">
-        <id column="unid"  property="unid" />
-        <result column="title"  property="title" />
-        <result column="content"  property="content" />
-        <result column="status"  property="status" />
-        <result column="create_date"  property="createDate" />
-        <result column="modify_date"  property="modifyDate" />
-    </resultMap>
-
-    <select id="queryNoticList" resultType="notic">
+    <select id="queryNoticList" resultMap="notic">
         select * from t_notic
         <where>
             <if test="unid != null and unid != ''"> and unid = #{unid} </if>
@@ -30,6 +21,7 @@
             <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
             <if test="modifyDate != null and modifyDate != ''"> and modify_date = #{modifyDate} </if>
         </where>
+        order by create_date desc
     </select>
 
     <select id="count" resultType="int">
