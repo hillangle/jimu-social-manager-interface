@@ -1,19 +1,19 @@
 package com.jimu.social.interfaces.controller.app;
 
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.jimu.social.interfaces.domain.Atta;
-import com.jimu.social.interfaces.domain.SysUser;
-import com.jimu.social.interfaces.domain.UserAtta;
-import com.jimu.social.interfaces.domain.UserGroup;
+import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
+import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
+import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
+import com.jimu.social.interfaces.domain.*;
 import com.jimu.social.interfaces.dto.Result;
-import com.jimu.social.interfaces.service.IAttaService;
-import com.jimu.social.interfaces.service.IGroupService;
-import com.jimu.social.interfaces.service.ISocialService;
-import com.jimu.social.interfaces.service.ISysUserService;
+import com.jimu.social.interfaces.service.*;
 import com.jimu.social.interfaces.utils.DateUtils;
 import com.jimu.social.interfaces.utils.JwtUtils;
+import com.jimu.social.interfaces.utils.SmsSendUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/app/index")
@@ -39,6 +40,9 @@ public class UserController {
 
     @Autowired
     private IAttaService attaService;
+
+    @Autowired
+    private INoticService noticService;
 
     @PostMapping(value = "/getUserInfo", consumes = "application/json")
     public String getUserInfo(HttpServletRequest request){
@@ -201,6 +205,67 @@ public class UserController {
             result.setResultMsg("用户编辑成功失败");
             result.setHttpCode(200);
             log.error("用户编辑成功失败",e);
+        }
+        return result.toJSONString();
+    }
+
+    @PostMapping("/getNoticList")
+    public String getNoticList(@RequestParam Map<String, Object> params){
+        log.info("开始获取公告列表");
+        Result result = new Result();
+        try {
+            List<Notic> noticList = noticService.queryNoticList(params);
+            result.setResultCode("true");
+            result.setResultData(JSONUtil.parseObj(noticList).toString());
+            result.setResultMsg("获取公告列表成功");
+            result.setHttpCode(200);
+            log.info("获取公告列表成功");
+        }catch(Exception e){
+            result.setResultCode("false");
+            result.setResultData(null);
+            result.setResultMsg("获取公告列表失败");
+            result.setHttpCode(200);
+            log.error("获取公告列表失败",e);
+        }
+        return result.toJSONString();
+    }
+
+    @GetMapping("/getSmsCode")
+    public String getSmsCode(String telphone){
+        log.info("开始获取短信验证码");
+        Result result = new Result();
+        try{
+            String code = RandomUtil.randomNumbers(6);
+            //短信发送
+            com.aliyun.dysmsapi20170525.Client client = SmsSendUtils.createClient("LTAI4FbxEibmGUmas2269PAs", "NcKKo9D4iFJrEn1MDa6G3hMtCbe90d");
+            SendSmsRequest sendSmsRequest = new SendSmsRequest()
+                    .setPhoneNumbers(telphone)
+                    .setSignName("基沐教育")
+//                    .setSignName("基沐科技")
+                    .setTemplateCode("SMS_185755081")
+                    .setTemplateParam("{\"code\":\""+code+"\"}");
+            // 复制代码运行请自行打印 API 的返回值
+            SendSmsResponse sendSmsResponse = client.sendSms(sendSmsRequest);
+            SendSmsResponseBody body = sendSmsResponse.getBody();
+            if (StrUtil.equals("OK", body.getCode())) {
+                result.setResultCode("true");
+                result.setResultData("{\\\"code\\\":\\\""+code+"\\\"}");
+                result.setResultMsg("获取短信验证码成功");
+                result.setHttpCode(200);
+                log.info("获取公告列表成功");
+            }else{
+                result.setResultCode("false");
+                result.setResultData(null);
+                result.setResultMsg("获取短信验证码失败");
+                result.setHttpCode(200);
+                log.error("获取短信验证码失败");
+            }
+        }catch(Exception e){
+            result.setResultCode("false");
+            result.setResultData(null);
+            result.setResultMsg("获取短信验证码失败");
+            result.setHttpCode(200);
+            log.error("获取短信验证码失败",e);
         }
         return result.toJSONString();
     }

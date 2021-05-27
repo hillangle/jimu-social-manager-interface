@@ -22,6 +22,7 @@
         <association property="user" javaType="com.jimu.social.interfaces.domain.SysUser">
             <result column="user_name"  property="userName" />
             <result column="birthday"  property="birthday" />
+            <result column="telphone"  property="telphone" />
 
             <collection property="userPhotos" ofType="com.jimu.social.interfaces.dto.UserPhoto">
                 <result column="user_atta_name"  property="attaName" />
@@ -86,6 +87,7 @@
             t.*,
             u.user_name,
             u.birthday,
+            u.telphone,
             tendencyAtta.atta_name,
             tendencyAtta.atta_path,
             userAtta.atta_name as user_atta_name,
