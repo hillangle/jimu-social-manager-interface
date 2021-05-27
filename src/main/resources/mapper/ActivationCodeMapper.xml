@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jimu.social.interfaces.mapper.ActivationCodeMapper">
+  <resultMap id="activationCode" type="com.jimu.social.interfaces.domain.ActivationCode">
+    <!--@mbg.generated-->
+    <!--@Table t_activation_code-->
+    <id column="unid" jdbcType="VARCHAR" property="unid" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_date" jdbcType="VARCHAR" property="createDate" />
+    <result column="modify_date" jdbcType="VARCHAR" property="modifyDate" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    unid, code, `status`, create_date, modify_date
+  </sql>
+  
+    <select id="queryActivationCodeList" resultMap="activationCode">
+        select * from t_activation_code
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="code != null and code != ''"> and code = #{code} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+            <if test="modifyDate != null and modifyDate != ''"> and modify_date = #{modifyDate} </if>
+        </where>
+    </select>
+    
+    
+  <insert id="save" parameterType="com.jimu.social.interfaces.domain.ActivationCode">
+    <!--@mbg.generated-->
+        <selectKey keyProperty="unid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
+    insert into t_activation_code (unid, code, `status`, 
+      create_date, modify_date)
+    values (#{unid,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=VARCHAR}, #{modifyDate,jdbcType=VARCHAR})
+  </insert>
+  
+    <select id="count" resultType="int">
+        select count(*) from t_activation_code
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="code != null and code != ''"> and code = #{code} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+            <if test="modifyDate != null and modifyDate != ''"> and modify_date = #{modifyDate} </if>
+        </where>
+    </select>
+    
+    <update id="updateActivationCode" parameterType="com.jimu.social.interfaces.domain.ActivationCode">
+        update t_activation_code
+        <trim prefix="set" suffixOverrides=",">
+            <if test="code != null and code != ''">code = #{code}, </if>
+            <if test="modifyDate != null and modifyDate != ''">modify_date = #{modifyDate}, </if>
+            <if test="status != null and status != ''">status = #{status}, </if>
+            <if test="createDate != null and createDate != ''">create_date = #{createDate}, </if>
+        </trim>
+        where unid = #{unid}
+    </update>
+  
+    <select id="queryActivationCodeListByoidArray" resultMap="activationCode">
+        select * from t_activation_code
+        <where>
+            <if test="oidArray != null and oidArray != ''">
+                and unid in 
+                <foreach collection="oidArray" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="oidArray == null or oidArray == ''">
+                and status = '0'
+            </if>
+        </where>
+    </select>
+</mapper>
