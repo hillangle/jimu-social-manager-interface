@@ -32,10 +32,9 @@ public class TendencyController {
     private ITendencyService tendencyService;
 
     @PostMapping(value = "/getTendencyList", consumes = "application/json")
-    public String getTendencyList(HttpServletRequest request){
+    public String getTendencyList(@RequestBody Map<String, Object> map, HttpServletRequest request){
         log.info("开始获取动态信息");
         Result result = new Result();
-        Map<String, Object> map = new HashMap<>();
         map.put("status","0");
         try {
             List tendencys = tendencyService.queryAllTendencyList(map);

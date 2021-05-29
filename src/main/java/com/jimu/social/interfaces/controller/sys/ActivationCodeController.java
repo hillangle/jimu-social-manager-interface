@@ -1,13 +1,13 @@
 package com.jimu.social.interfaces.controller.sys;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.jimu.social.interfaces.domain.ActivationCode;
 import com.jimu.social.interfaces.service.IActivationCodeService;
 import com.jimu.social.interfaces.utils.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -60,8 +60,9 @@ public class ActivationCodeController {
     */
     @PostMapping("/addActivationCode")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils addActivationCode(ActivationCode activationCode, int num){
+    public ResultUtils addActivationCode(int num){
         try{
+            ActivationCode activationCode = new ActivationCode();
             activationCode.setCreateDate(DateUtils.getDateByString());
             activationCode.setModifyDate(DateUtils.getDateByString());
             for (int i=0; i<num; i++) {
@@ -101,34 +102,35 @@ public class ActivationCodeController {
         try{
             List<ActivationCode> activationCodeList;
             //不为空，导出所选   为空导出全部未导出状态的
-            if (StringUtils.isNotEmpty(unids)) {
+            if (StrUtil.isNotEmpty(unids)) {
                 String[] oidArray = unids.split(",");
                 activationCodeList = activationCodeService.queryActivationCodeListByoidArray(oidArray);
             } else {
                 activationCodeList = activationCodeService.queryActivationCodeListByoidArray(null);
             }
-            JSONArray jsonArray = JsonUtil.objToJSONArray(activationCodeList);
+            JSONArray jsonArray = new JSONArray(activationCodeList);
             if (jsonArray != null) {
                 String title = "激活码列表";
                 String[] rowsName = new String[] { "序号", "激活码", "状态" };
                 List<Object[]> dataList = new ArrayList<Object[]>();
                 Object[] objs = null;
+                JSONObject jsonObj;
                 for (int i = 0; i < jsonArray.size(); i++) {
-                    JSONObject jsonObj = JsonUtil.objToJSONObject(jsonArray.get(i));
+                    jsonObj = JSONUtil.parseObj(jsonArray.get(i));
 
                     objs = new Object[rowsName.length];
                     objs[0] = i + 1;
-                    if (!StrUtil.isBlank(jsonObj.getString("code"))) {
-                        objs[1] = jsonObj.getString("code");
+                    if (!StrUtil.isBlank(jsonObj.get("code").toString())) {
+                        objs[1] = jsonObj.get("code");
                     } else {
                         objs[1] = "--";
                     }
-                    if (!StrUtil.isBlank(jsonObj.getString("status"))) {
-                        if ("0".equals(jsonObj.getString("status"))) {
+                    if (!StrUtil.isBlank(jsonObj.get("status").toString())) {
+                        if ("0".equals(jsonObj.get("status").toString())) {
                             objs[2] = "未导出";
-                        } else if ("1".equals(jsonObj.getString("status"))) {
+                        } else if ("1".equals(jsonObj.get("status").toString())) {
                             objs[2] = "未激活";
-                        } else if ("2".equals(jsonObj.getString("status"))) {
+                        } else if ("2".equals(jsonObj.get("status").toString())) {
                             objs[2] = "已激活";
                         }
                     } else {
