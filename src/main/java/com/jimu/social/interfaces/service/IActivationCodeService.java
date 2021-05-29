@@ -2,6 +2,7 @@ package com.jimu.social.interfaces.service;
 
 
 import com.jimu.social.interfaces.domain.ActivationCode;
+import com.jimu.social.interfaces.domain.vo.ActivationCodeVO;
 
 import java.util.List;
 import java.util.Map;
@@ -43,4 +44,13 @@ public interface IActivationCodeService {
     * @Date: 2021/5/27 14:20
     */
     List<ActivationCode> queryActivationCodeListByoidArray(String[] oidArray);
+
+    /**
+    * @Description: 激活码核销数
+    * @Param: [params]
+    * @return: java.util.List<java.lang.String>
+    * @Author: liangqi
+    * @Date: 2021/5/29 11:49
+    */
+    List<ActivationCodeVO> cancelVerificationList(Map<String, Object> params);
 }

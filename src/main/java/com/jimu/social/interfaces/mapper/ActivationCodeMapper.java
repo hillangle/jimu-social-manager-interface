@@ -1,6 +1,7 @@
 package com.jimu.social.interfaces.mapper;
 
 import com.jimu.social.interfaces.domain.ActivationCode;
+import com.jimu.social.interfaces.domain.vo.ActivationCodeVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface ActivationCodeMapper {
     int count(Map<String, Object> map);
 
     List<ActivationCode> queryActivationCodeListByoidArray(@Param("oidArray") String[] oidArray);
+
+    List<ActivationCodeVO> cancelVerificationList(Map<String, Object> map);
 }

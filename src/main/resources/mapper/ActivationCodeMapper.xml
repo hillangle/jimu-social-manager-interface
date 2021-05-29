@@ -25,6 +25,7 @@
             <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
             <if test="modifyDate != null and modifyDate != ''"> and modify_date = #{modifyDate} </if>
         </where>
+        ORDER BY create_date desc
     </select>
     
     
@@ -74,5 +75,28 @@
                 and status = '0'
             </if>
         </where>
+        ORDER BY create_date
+    </select>
+    
+    <select id="cancelVerificationList" resultType="com.jimu.social.interfaces.domain.vo.ActivationCodeVO">
+        SELECT
+            create_date createDate,
+            COUNT(status = '0' OR NULL) status0,
+            COUNT(status = '1' OR NULL) status1,
+            COUNT(status = '2' OR NULL) status2
+        FROM
+            `t_activation_code`
+        <where>
+            <if test="startDate != null and startDate != ''"> and create_date >= #{startDate} </if>
+            <if test="endDate != null and endDate != ''"> and create_date &lt;= #{endDate} </if>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="code != null and code != ''"> and code = #{code} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+            <if test="modifyDate != null and modifyDate != ''"> and modify_date = #{modifyDate} </if>
+        </where>
+        GROUP BY
+            create_date
+            ORDER BY create_date;
     </select>
 </mapper>

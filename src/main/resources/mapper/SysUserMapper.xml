@@ -81,6 +81,8 @@
             <if test="remark != null and remark != ''"> and remark = #{remark} </if>
             <if test="status != null and status != ''"> and status = #{status} </if>
             <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+            <if test="startDate != null and startDate != ''"> and create_date >= #{startDate} </if>
+            <if test="endDate != null and endDate != ''"> and create_date &lt;= #{endDate} </if>
         </where>
     </select>
 

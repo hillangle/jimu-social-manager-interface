@@ -1,6 +1,7 @@
 package com.jimu.social.interfaces.service.impl;
 
 import com.jimu.social.interfaces.domain.ActivationCode;
+import com.jimu.social.interfaces.domain.vo.ActivationCodeVO;
 import com.jimu.social.interfaces.mapper.ActivationCodeMapper;
 import com.jimu.social.interfaces.service.IActivationCodeService;
 import lombok.extern.slf4j.Slf4j;
@@ -57,5 +58,11 @@ public class ActivationCodeServiceImpl implements IActivationCodeService {
     @Override
     public List<ActivationCode> queryActivationCodeListByoidArray(String[] oidArray) {
         return activationCodeMapper.queryActivationCodeListByoidArray(oidArray);
+    }
+
+    @Override
+    public List<ActivationCodeVO> cancelVerificationList(Map<String, Object> map) {
+       List<ActivationCodeVO> activationCodeVOList = activationCodeMapper.cancelVerificationList(map);
+        return activationCodeVOList;
     }
 }
