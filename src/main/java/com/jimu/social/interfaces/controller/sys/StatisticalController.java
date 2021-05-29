@@ -1,6 +1,6 @@
 package com.jimu.social.interfaces.controller.sys;
 
-import com.alibaba.fastjson.JSONObject;
+import cn.hutool.json.JSONObject;
 import com.jimu.social.interfaces.domain.Notic;
 import com.jimu.social.interfaces.domain.vo.ActivationCodeVO;
 import com.jimu.social.interfaces.service.IActivationCodeService;

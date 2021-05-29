@@ -65,6 +65,7 @@ public class ActivationCodeController {
             ActivationCode activationCode = new ActivationCode();
             activationCode.setCreateDate(DateUtils.getDateByString());
             activationCode.setModifyDate(DateUtils.getDateByString());
+            activationCode.setStatus("0");
             for (int i=0; i<num; i++) {
                 activationCode.setCode(randomCode(12));
                 activationCodeService.save(activationCode);
