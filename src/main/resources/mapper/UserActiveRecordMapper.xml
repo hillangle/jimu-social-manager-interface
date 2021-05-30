@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jimu.social.interfaces.mapper.UserActiveRecordMapper">
+
+  <resultMap id="userActiveRecord" type="com.jimu.social.interfaces.domain.UserActiveRecord">
+    <id column="unid" jdbcType="VARCHAR" property="unid" />
+    <result column="active_id" jdbcType="VARCHAR" property="activeId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_date" jdbcType="VARCHAR" property="createDate" />
+    <result column="modify_date" jdbcType="VARCHAR" property="modifyDate" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    unid, active_id, user_id, `status`, create_date, modify_date
+  </sql>
+  
+    <select id="queryUserActiveRecordList" resultType="com.jimu.social.interfaces.domain.vo.UserActiveRecordVO">
+        SELECT t.unid, t.active_id activeId, t.user_id userId, t.status, t.create_date createDate, 
+        t.modify_date modifyDate, u.user_name userName, u.user_role userRole, u.sex, u.telphone, u.birthday, 
+        u.remark, u.create_date userCreateDate 
+        FROM t_user_active_record t LEFT JOIN t_user u on t.user_id = u.unid
+        <where>
+            <if test="unid != null and unid != ''"> and t.unid = #{unid} </if>
+            <if test="activeId != null and activeId != ''"> and t.active_id = #{activeId} </if>
+            <if test="userId != null and userId != ''"> and t.user_id = #{userId} </if>
+            <if test="status != null and status != ''"> and t.status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and t.create_date = #{createDate} </if>
+            <if test="modifyDate != null and modifyDate != ''"> and t.modify_date = #{modifyDate} </if>
+        </where>
+        ORDER BY t.create_date desc
+    </select>
+    
+    
+  <insert id="save" parameterType="com.jimu.social.interfaces.domain.UserActiveRecord">
+    <!--@mbg.generated-->
+        <selectKey keyProperty="unid" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','') FROM DUAL
+        </selectKey>
+    insert into t_user_active_record (unid, active_id,  user_id, `status`, 
+      create_date, modify_date)
+    values (#{unid,jdbcType=VARCHAR}, #{activeId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+    #{status,jdbcType=VARCHAR},  #{createDate,jdbcType=VARCHAR}, #{modifyDate,jdbcType=VARCHAR})
+  </insert>
+  
+    <select id="count" resultType="int">
+        select count(*) from t_user_active_record
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="activeId != null and activeId != ''"> and active_id = #{activeId} </if>
+            <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+            <if test="modifyDate != null and modifyDate != ''"> and modify_date = #{modifyDate} </if>
+        </where>
+    </select>
+    
+    <update id="updateUserActiveRecord" parameterType="com.jimu.social.interfaces.domain.UserActiveRecord">
+        update t_user_active_record
+        <trim prefix="set" suffixOverrides=",">
+            <if test="activeId != null and activeId != ''">active_id = #{activeId}, </if>
+            <if test="userId != null and userId != ''">user_id = #{userId}, </if>
+            <if test="modifyDate != null and modifyDate != ''">modify_date = #{modifyDate}, </if>
+            <if test="status != null and status != ''">status = #{status}, </if>
+            <if test="createDate != null and createDate != ''">create_date = #{createDate}, </if>
+        </trim>
+        where unid = #{unid}
+    </update>
+  
+</mapper>
