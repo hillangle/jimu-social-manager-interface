@@ -80,4 +80,9 @@ public class SocialServiceImpl implements ISocialService {
             return 0;
         }
     }
+
+    @Override
+    public List<Map<String, Object>> selectUserSocialList(Map<String, Object> params) {
+        return socialMapper.selectUserSocialList(params);
+    }
 }

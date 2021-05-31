@@ -1,9 +1,12 @@
 package com.jimu.social.interfaces.service.impl;
 
 import com.jimu.social.interfaces.domain.SysUser;
+import com.jimu.social.interfaces.domain.UserLoginLog;
 import com.jimu.social.interfaces.dto.Result;
 import com.jimu.social.interfaces.mapper.SysUserMapper;
+import com.jimu.social.interfaces.mapper.UserLoginLogMapper;
 import com.jimu.social.interfaces.service.ISysUserService;
+import com.jimu.social.interfaces.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +27,8 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private UserLoginLogMapper userLoginLogMapper;
 
     public void save(SysUser user) {
         sysUserMapper.saveSysUser(user);
@@ -36,6 +41,12 @@ public class SysUserServiceImpl implements ISysUserService {
             if (sysUser == null) {
                 return null;
             }
+            //保存用户登录记录
+            UserLoginLog userLoginLog = new UserLoginLog();
+            userLoginLog.setStatus("0");
+            userLoginLog.setCreateDate(DateUtils.getDateByString());
+            userLoginLog.setUserId(sysUser.getUnid().toString());
+            userLoginLogMapper.save(userLoginLog);
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(sysUser.getUserRole()));
             //封装 SpringSecurity  需要的UserDetails 对象并返回

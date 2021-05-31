@@ -43,7 +43,7 @@ public interface ISocialService {
 
     /**
      * 平台信息修改
-     * @param social
+     * @param userSocial
      * @return flag
      */
     boolean updateUserSocial(UserSocial userSocial);
@@ -54,4 +54,13 @@ public interface ISocialService {
      * @return Social
      */
     int count(Map<String, Object> map);
+
+    /**
+    * @Description: 平台收藏统计
+    * @Param: [params]
+    * @return: java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+    * @Author: liangqi
+    * @Date: 2021/5/31 22:11
+    */
+    List<Map<String, Object>> selectUserSocialList(Map<String, Object> params);
 }

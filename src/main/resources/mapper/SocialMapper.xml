@@ -104,4 +104,28 @@
             <if test="socialUnid != null and socialUnid != ''"> and `social_unid` = #{socialUnid} </if>
         </where>
     </update>
+    
+    
+    <select id="selectUserSocialList" resultType="java.util.HashMap">
+        SELECT
+            t.social_unid socialUnid,
+            s.name,
+            COUNT(t.unid) num
+        FROM
+            t_user_social  t 
+            LEFT JOIN t_social s ON s.unid = t.social_unid
+        <where>
+            <if test="startDate != null and startDate != ''"> and t.create_date >= #{startDate} </if>
+            <if test="endDate != null and endDate != ''"> and t.create_date &lt;= #{endDate} </if>
+            
+            <if test="unid != null and unid != ''"> and t.unid = #{unid} </if>
+            <if test="userUnid != null and userUnid != ''"> and t.user_unid = #{code} </if>
+            <if test="socialUnid != null and socialUnid != ''"> and t.social_unid = #{status} </if>
+            <if test="link != null and link != ''"> and t.link = #{link} </if>
+            <if test="status != null and status != ''"> and t.status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and t.create_date = #{createDate} </if>
+        </where>
+        GROUP BY
+            t.social_unid
+    </select>
 </mapper>

@@ -2,11 +2,9 @@ package com.jimu.social.interfaces.controller.sys;
 
 import cn.hutool.json.JSONObject;
 import com.jimu.social.interfaces.domain.Notic;
+import com.jimu.social.interfaces.domain.UserLoginLog;
 import com.jimu.social.interfaces.domain.vo.ActivationCodeVO;
-import com.jimu.social.interfaces.service.IActivationCodeService;
-import com.jimu.social.interfaces.service.INoticService;
-import com.jimu.social.interfaces.service.ISysUserService;
-import com.jimu.social.interfaces.service.ITendencyService;
+import com.jimu.social.interfaces.service.*;
 import com.jimu.social.interfaces.utils.PageUtils;
 import com.jimu.social.interfaces.utils.Query;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +34,12 @@ public class StatisticalController {
     
     @Autowired
     private IActivationCodeService activationCodeService;
+    
+    @Autowired
+    private IUserLoginLogService userLoginLogService;
+    
+    @Autowired
+    private ISocialService socialService;
 
     /**新增用户数
     * @Description: 
@@ -104,4 +108,60 @@ public class StatisticalController {
         PageUtils pageUtils = new PageUtils(noticList,total);
         return pageUtils;
     }
+
+    /**用户登录统计
+     * @Description:
+     * @Param: [params]
+     */
+    @GetMapping("/getUserLoginLogList")
+    @ResponseBody
+    public JSONObject getUserLoginLogList(@RequestParam Map<String,Object> params){
+
+        List<String> createDate = new ArrayList<String>();
+        List<String> num = new ArrayList<String>();
+        JSONObject jsonObject = new JSONObject();
+        try{
+
+            List<Map<String, Object>> list = userLoginLogService.selectUserLoginLogList(params);
+            list.forEach(l->
+            {
+                createDate.add(l.get("createDate").toString());
+                num.add(l.get("num").toString());
+            });
+        } catch (Exception e) {
+            log.error("查询激活码核销失败:{}",e);
+        }
+        jsonObject.put("createDate", createDate);
+        jsonObject.put("num", num);
+        return jsonObject;
+    }
+    
+    /**平台收藏统计
+     * @Description:
+     * @Param: [params]
+     */
+    @GetMapping("/getUserSocialList")
+    @ResponseBody
+    public JSONObject getUserSocialList(@RequestParam Map<String,Object> params){
+
+        List<String> name = new ArrayList<String>();
+        List<String> num = new ArrayList<String>();
+        JSONObject jsonObject = new JSONObject();
+        try{
+
+            List<Map<String, Object>> list = socialService.selectUserSocialList(params);
+            list.forEach(l->
+            {
+                name.add(l.get("name").toString());
+                num.add(l.get("num").toString());
+            });
+        } catch (Exception e) {
+            log.error("查询激活码核销失败:{}",e);
+        }
+        jsonObject.put("name", name);
+        jsonObject.put("num", num);
+        return jsonObject;
+    }
+    
+    
 }
