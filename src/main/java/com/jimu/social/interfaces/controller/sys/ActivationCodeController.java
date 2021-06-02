@@ -1,6 +1,7 @@
 package com.jimu.social.interfaces.controller.sys;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -128,6 +129,10 @@ public class ActivationCodeController {
                     }
                     if (!StrUtil.isBlank(jsonObj.get("status").toString())) {
                         if ("0".equals(jsonObj.get("status").toString())) {
+                            //未导出改为未激活
+                            ActivationCode activationCode = JSONUtil.toBean(jsonObj, ActivationCode.class);
+                            activationCode.setStatus("1");
+                            activationCodeService.updateActivationCode(activationCode);
                             objs[2] = "未导出";
                         } else if ("1".equals(jsonObj.get("status").toString())) {
                             objs[2] = "未激活";
