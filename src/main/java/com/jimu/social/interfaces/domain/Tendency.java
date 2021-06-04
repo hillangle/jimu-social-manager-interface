@@ -22,6 +22,7 @@ public class Tendency {
     public String content;
     public String status;
     public String createDate;
+    public String city;
 
     public SysUser user;
 
@@ -46,6 +47,7 @@ public class Tendency {
                 ", tendencyUserZan='" + tendencyUserZan + '\'' +
                 ", tendencyUserZans='" + tendencyUserZans + '\'' +
                 ", status='" + status + '\'' +
+                ", city='" + city + '\'' +
                 ", createDate='" + createDate + '\'' +'}';
     }
 }

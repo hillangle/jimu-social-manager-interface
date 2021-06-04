@@ -28,6 +28,13 @@ public interface ISocialService {
     List<Social> querySocialList(Map<String, Object> map);
 
     /**
+     * 获取平台分页列表
+     * @param map
+     * @return Tendency
+     */
+    List<Social> querySocialPage(Map<String, Object> map);
+
+    /**
      * 根据登录用户获取绑定平台列表
      * @param map
      * @return Tendency

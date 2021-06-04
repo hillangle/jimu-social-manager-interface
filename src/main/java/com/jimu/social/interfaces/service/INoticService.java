@@ -15,11 +15,18 @@ public interface INoticService {
     public void save(Notic notic);
 
     /**
-     * 获取公告分页列表
+     * 获取公告列表
      * @param map
      * @return Tendency
      */
     List<Notic> queryNoticList(Map<String, Object> map);
+
+    /**
+     * 获取公告分页列表
+     * @param map
+     * @return Tendency
+     */
+    List<Notic> queryNoticPage(Map<String, Object> map);
 
     /**
      * 公告信息修改

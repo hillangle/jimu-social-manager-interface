@@ -23,6 +23,13 @@ public interface IActivationCodeService {
     List<ActivationCode> queryActivationCodeList(Map<String, Object> map);
 
     /**
+     * 获取激活码分页列表
+     * @param map
+     * @return Tendency
+     */
+    List<ActivationCode> queryActivationCodePage(Map<String, Object> map);
+
+    /**
      * 激活码信息修改
      * @param activationCode
      * @return flag
@@ -53,4 +60,13 @@ public interface IActivationCodeService {
     * @Date: 2021/5/29 11:49
     */
     List<ActivationCodeVO> cancelVerificationList(Map<String, Object> params);
+
+    /**
+     * @Description: 根据code获取激活码实体
+     * @Param: code
+     * @return: com.jimu.social.interfaces.domain.ActivationCode
+     * @Author: qwb
+     * @Date: 2021/5/29 11:49
+     */
+    ActivationCode queryActivationCode(String code);
 }

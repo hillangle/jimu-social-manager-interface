@@ -10,6 +10,7 @@ public class UserSocial {
     public String link;
     public String status;
     public String createDate;
+    public String QRcode;
 
     @Override
     public String toString() {
@@ -18,6 +19,7 @@ public class UserSocial {
                 ", socialUnid='" + socialUnid + '\'' +
                 ", link='" + link + '\'' +
                 ", status='" + status + '\'' +
+                ", QRcode='" + QRcode + '\'' +
                 ", createDate='" + createDate + '\'' +'}';
     }
 }

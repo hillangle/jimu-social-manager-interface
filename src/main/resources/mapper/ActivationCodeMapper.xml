@@ -27,7 +27,23 @@
         </where>
         ORDER BY create_date desc
     </select>
-    
+
+    <select id="queryActivationCodePage" resultMap="activationCode">
+        select * from t_activation_code
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="code != null and code != ''"> and code = #{code} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+            <if test="modifyDate != null and modifyDate != ''"> and modify_date = #{modifyDate} </if>
+        </where>
+        ORDER BY create_date desc
+        limit #{page} , #{limit}
+    </select>
+
+    <select id="queryActivationCode" resultMap="activationCode">
+        select * from t_activation_code where code = #{code} and status in ('1','2')
+    </select>
     
   <insert id="save" parameterType="com.jimu.social.interfaces.domain.ActivationCode">
     <!--@mbg.generated-->

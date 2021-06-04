@@ -24,6 +24,13 @@ public interface GroupMapper {
     List<Group> queryGroupList(Map<String, Object> map);
 
     /**
+     * 获取社交平台分页列表
+     * @param map
+     * @return Social
+     */
+    List<Group> queryGroupPage(Map<String, Object> map);
+
+    /**
      * 获取社交平台列表
      * @param map
      * @return Social

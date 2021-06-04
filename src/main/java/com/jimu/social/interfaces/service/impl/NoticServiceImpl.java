@@ -34,6 +34,16 @@ public class NoticServiceImpl implements INoticService {
     }
 
     @Override
+    public List<Notic> queryNoticPage(Map<String, Object> map) {
+        try {
+            return noticMapper.queryNoticPage(map);
+        } catch(Exception e){
+            log.error("获取公告列表失败,失败原因{}",e);
+            return null;
+        }
+    }
+
+    @Override
     public boolean updateNotic(Notic notic) {
         try{
             noticMapper.updateNotic(notic);

@@ -27,7 +27,7 @@ public class SysGroupController {
     @ResponseBody
     public PageUtils getGroupList(@RequestParam Map<String, Object> params){
         Query query = new Query(params);
-        List<Group> groupList = groupService.queryGroupList(query);
+        List<Group> groupList = groupService.queryGroupPage(query);
         int total = groupService.count(query);
         PageUtils pageUtils = new PageUtils(groupList,total);
         return pageUtils;
@@ -35,7 +35,7 @@ public class SysGroupController {
 
     @PostMapping("/addGroup")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils addGroup(Group group){
+    public ResultUtils addGroup(@RequestBody Group group){
         try{
             group.setCreateDate(DateUtils.getDateByString());
             groupService.save(group);
@@ -48,7 +48,7 @@ public class SysGroupController {
 
     @PostMapping("/updateGroup")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils updateGroupForStatus(Group group){
+    public ResultUtils updateGroupForStatus(@RequestBody Group group){
         try{
             groupService.updateGroup(group);
             return ResultUtils.ok("兴趣小组状态修改成功");

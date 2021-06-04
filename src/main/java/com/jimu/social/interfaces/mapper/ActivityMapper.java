@@ -22,6 +22,13 @@ public interface ActivityMapper {
     List<Activity> queryActivityList(Map<String, Object> map);
 
     /**
+     * 获取活动分页列表
+     * @param map
+     * @return Activity
+     */
+    List<Activity> queryActivityPage(Map<String, Object> map);
+
+    /**
      * 活动信息修改
      * @param activity
      * @return flag

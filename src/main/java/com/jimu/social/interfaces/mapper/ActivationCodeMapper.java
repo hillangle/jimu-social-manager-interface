@@ -17,6 +17,8 @@ public interface ActivationCodeMapper {
 
     List<ActivationCode> queryActivationCodeList(Map<String, Object> map);
 
+    List<ActivationCode> queryActivationCodePage(Map<String, Object> map);
+
     void updateActivationCode(ActivationCode activationCode);
 
     int count(Map<String, Object> map);
@@ -24,4 +26,6 @@ public interface ActivationCodeMapper {
     List<ActivationCode> queryActivationCodeListByoidArray(@Param("oidArray") String[] oidArray);
 
     List<ActivationCodeVO> cancelVerificationList(Map<String, Object> map);
+
+    ActivationCode queryActivationCode(String code);
 }

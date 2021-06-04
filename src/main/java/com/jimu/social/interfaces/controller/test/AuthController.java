@@ -59,6 +59,11 @@ public class AuthController {
                     result.setResultData(null);
                     result.setResultMsg("密码/激活码错误");
                     result.setHttpCode(200);
+                }else{
+                    result.setResultCode("false");
+                    result.setResultData(null);
+                    result.setResultMsg("意外错误，请联系管理员");
+                    result.setHttpCode(200);
                 }
             }else {//没有用户则新建用户并返回token
                 user.setUserName(registerUser.get("username"));
@@ -86,5 +91,5 @@ public class AuthController {
             result.setHttpCode(200);
         }
         return result.toJSONString();
- }
+    }
 }

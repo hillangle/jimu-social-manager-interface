@@ -83,6 +83,16 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     @Override
+    public List<SysUser> queryUserPage(Map<String, Object> map) {
+        try{
+            return sysUserMapper.queryUserPage(map);
+        }catch(Exception e){
+            log.error("根据用户角色获取用户分页列表失败,失败原因:{}",e);
+            return null;
+        }
+    }
+
+    @Override
     public List<SysUser> queryUserInfo(Map<String, Object> map) {
         try{
             return sysUserMapper.queryUserInfo(map);

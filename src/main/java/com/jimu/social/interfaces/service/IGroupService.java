@@ -28,6 +28,13 @@ public interface IGroupService {
      * @param map
      * @return Tendency
      */
+    List<Group> queryGroupPage(Map<String, Object> map);
+
+    /**
+     * 获取兴趣小组分页列表
+     * @param map
+     * @return Tendency
+     */
     List<GroupDto> queryGroupListWithUserCount(Map<String, Object> map);
 
     /**

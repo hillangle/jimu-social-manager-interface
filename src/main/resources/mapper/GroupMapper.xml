@@ -20,6 +20,18 @@
         </where>
     </select>
 
+    <select id="queryGroupPage" resultMap="group">
+        select * from t_group
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="name != null and name != ''"> and `name` = #{name} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+        </where>
+        order by create_date desc
+        limit #{page} , #{limit}
+    </select>
+
     <select id="queryGroupListWithUserCount" resultType="com.jimu.social.interfaces.dto.GroupDto">
         select
             g.*,(select count(1) from t_user_group b where b.group_id = g.unid and b.status = '0') as count

@@ -34,6 +34,16 @@ public class ActivityServiceImpl implements IActivityService {
     }
 
     @Override
+    public List<Activity> queryActivityPage(Map<String, Object> map) {
+        try {
+           return activityMapper.queryActivityPage(map);
+        } catch(Exception e){
+            log.error("获取活动列表失败,失败原因{}",e);
+            return null;
+        }
+    }
+
+    @Override
     public boolean updateActivity(Activity activity) {
         try{
             activityMapper.updateActivity(activity);

@@ -40,7 +40,7 @@ public class SysNoticController {
     @ResponseBody
     public PageUtils getNoticList(@RequestParam Map<String, Object> params){
         Query query = new Query(params);
-        List<Notic> noticList = noticService.queryNoticList(query);
+        List<Notic> noticList = noticService.queryNoticPage(query);
         int total = noticService.count(query);
         PageUtils pageUtils = new PageUtils(noticList,total);
         return pageUtils;

@@ -14,6 +14,10 @@
         <result column="remark"  property="remark" />
         <result column="status"  property="status" />
         <result column="create_date"  property="createDate" />
+
+        <collection property="groups" ofType="com.jimu.social.interfaces.domain.Group">
+            <result column="name"  property="name" />
+        </collection>
     </resultMap>
 
     <resultMap id="appUserInfo" type="com.jimu.social.interfaces.domain.SysUser">
@@ -54,12 +58,13 @@
         select * from t_user
         <where>
             <if test="unid != null and unid != ''"> and unid = #{unid} </if>
-            <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+            <if test="userName != null and userName != ''"> and user_name like '%${userName}%' </if>
             <if test="account != null and account != ''"> and account = #{account} </if>
             <if test="password != null and password != ''"> and password = #{password} </if>
             <if test="userRole != null and userRole != ''"> and user_role = #{userRole} </if>
-            <if test="sex != null and sex != ''"> and sex = #{sex} </if>
-            <if test="telphone != null and telphone != ''"> and telphone = #{telphone} </if>
+            <if test="sex != null and sex != '' and '0'.toString() neq sex.toString()"> and sex = #{sex} </if>
+            <if test="sex != null and sex != '' and '0'.toString() eq sex.toString()">  and (sex = '0' or sex is null or sex = '') </if>
+            <if test="telphone != null and telphone != ''"> and telphone like '%${telphone}%' </if>
             <if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
             <if test="remark != null and remark != ''"> and remark = #{remark} </if>
             <if test="status != null and status != ''"> and status = #{status} </if>
@@ -67,16 +72,39 @@
         </where>
     </select>
 
+    <select id="queryUserPage" resultMap="sysUser">
+        select u.*,g.name from t_user u
+        left join t_user_group ug on u.unid = ug.user_id
+        left join t_group g on ug.group_id = g.unid
+        <where>
+            <if test="unid != null and unid != ''"> and u.unid = #{unid} </if>
+            <if test="userName != null and userName != ''"> and u.user_name like '%${userName}%' </if>
+            <if test="account != null and account != ''"> and u.account = #{account} </if>
+            <if test="password != null and password != ''"> and u.password = #{password} </if>
+            <if test="userRole != null and userRole != ''"> and u.user_role = #{userRole} </if>
+            <if test="sex != null and sex != '' and '0'.toString() neq sex.toString()"> and u.sex = #{sex} </if>
+            <if test="sex != null and sex != '' and '0'.toString() eq sex.toString()">  and (u.sex = '0' or u.sex is null or u.sex = '') </if>
+            <if test="telphone != null and telphone != ''"> and u.telphone like '%${telphone}%' </if>
+            <if test="birthday != null and birthday != ''"> and u.birthday = #{birthday} </if>
+            <if test="remark != null and remark != ''"> and u.remark = #{remark} </if>
+            <if test="status != null and status != ''"> and u.status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and u.create_date = #{createDate} </if>
+        </where>
+        order by u.create_date desc
+        limit #{page} , #{limit}
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from t_user
         <where>
             <if test="unid != null and unid != ''"> and unid = #{unid} </if>
-            <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+            <if test="userName != null and userName != ''"> and user_name like '%${userName}%' </if>
             <if test="account != null and account != ''"> and account = #{account} </if>
             <if test="password != null and password != ''"> and password = #{password} </if>
             <if test="userRole != null and userRole != ''"> and user_role = #{userRole} </if>
-            <if test="sex != null and sex != ''"> and sex = #{sex} </if>
-            <if test="telphone != null and telphone != ''"> and telphone = #{telphone} </if>
+            <if test="sex != null and sex != '' and '0'.toString() neq sex.toString()"> and sex = #{sex} </if>
+            <if test="sex != null and sex != '' and '0'.toString() eq sex.toString()">  and (sex = '0' or sex is null or sex = '') </if>
+            <if test="telphone != null and telphone != ''"> and telphone like '%${telphone}%' </if>
             <if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
             <if test="remark != null and remark != ''"> and remark = #{remark} </if>
             <if test="status != null and status != ''"> and status = #{status} </if>

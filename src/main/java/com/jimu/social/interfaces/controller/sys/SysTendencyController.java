@@ -25,7 +25,7 @@ public class SysTendencyController {
     @ResponseBody
     public PageUtils getTendencyList(@RequestParam Map<String, Object> params){
         Query query = new Query(params);
-        List<Tendency> TendencyList = tendencyService.queryTendencyList(query);
+        List<Tendency> TendencyList = tendencyService.queryTendencyPage(query);
         int total = tendencyService.count(query);
         PageUtils pageUtils = new PageUtils(TendencyList,total);
         return pageUtils;

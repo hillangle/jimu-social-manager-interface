@@ -21,6 +21,8 @@ public class Activity {
     public String name;
     public String content;
     public String address;
+    public String title;
+    public double price;
     public String startTime;
     public String endTime;
     public String activeTime;

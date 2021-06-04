@@ -46,7 +46,7 @@ public class ActivationCodeController {
     @ResponseBody
     public PageUtils getActivationCodeList(@RequestParam Map<String, Object> params){
         Query query = new Query(params);
-        List<ActivationCode> activationCodeList = activationCodeService.queryActivationCodeList(query);
+        List<ActivationCode> activationCodeList = activationCodeService.queryActivationCodePage(query);
         int total = activationCodeService.count(query);
         PageUtils pageUtils = new PageUtils(activationCodeList,total);
         return pageUtils;

@@ -26,7 +26,7 @@ public class SysSocialController {
     @ResponseBody
     public PageUtils getSocialList(@RequestParam Map<String, Object> params){
         Query query = new Query(params);
-        List<Social> socialList = socialService.querySocialList(query);
+        List<Social> socialList = socialService.querySocialPage(query);
         int total = socialService.count(query);
         PageUtils pageUtils = new PageUtils(socialList,total);
         return pageUtils;
@@ -34,7 +34,7 @@ public class SysSocialController {
 
     @PostMapping("/addSocial")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils addSocial(Social social){
+    public ResultUtils addSocial(@RequestBody Social social){
         try{
             social.setCreateDate(DateUtils.getDateByString());
             socialService.save(social);
@@ -47,7 +47,7 @@ public class SysSocialController {
 
     @PostMapping("/updateSocial")
     @PreAuthorize("hasRole('SYSUSER')")
-    public ResultUtils updateSocialForStatus(Social social){
+    public ResultUtils updateSocialForStatus(@RequestBody Social social){
         try{
             socialService.updateSocial(social);
             return ResultUtils.ok("社交平台状态修改成功");

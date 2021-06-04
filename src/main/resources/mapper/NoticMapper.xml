@@ -26,6 +26,21 @@
         order by create_date desc
     </select>
 
+    <select id="queryNoticPage" resultMap="notic">
+        select * from t_notic
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="title != null and title != ''"> and title = #{title} </if>
+            <if test="content != null and content != ''"> and content = #{content} </if>
+            <if test="link != null and link != ''"> and link = #{link} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+            <if test="modifyDate != null and modifyDate != ''"> and modify_date = #{modifyDate} </if>
+        </where>
+        order by create_date desc
+        limit #{page} , #{limit}
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from t_notic
         <where>

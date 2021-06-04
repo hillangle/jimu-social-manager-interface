@@ -50,6 +50,13 @@ public interface TendencyMapper {
     List<Tendency> queryAllTendencyList(Map<String, Object> map);
 
     /**
+     * 获取全部动态分页列表
+     * @param map
+     * @return Tendency
+     */
+    List<Tendency> queryTendencyPage(Map<String, Object> map);
+
+    /**
      * 动态信息修改
      * @param tendency
      * @return flag

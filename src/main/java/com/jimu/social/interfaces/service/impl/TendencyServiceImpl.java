@@ -69,6 +69,16 @@ public class TendencyServiceImpl implements ITendencyService {
     }
 
     @Override
+    public List<Tendency> queryTendencyPage(Map<String, Object> map) {
+        try {
+           return tendencyMapper.queryTendencyPage(map);
+        } catch(Exception e){
+            log.error("获取动态列表失败,失败原因{}",e);
+            return null;
+        }
+    }
+
+    @Override
     public TendencyUserZan queryZanByUserId(Map<String, Object> map) {
         try {
            return tendencyMapper.queryZanByUserId(map);

@@ -6,7 +6,8 @@ spring:
 mybatis:
     mapper-locations: classpath:mapper/*.xml
     type-aliases-package: com.jimu.social.interfaces.domain
-
+    configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
     config: classpath:log.xml
     level:

@@ -36,6 +36,7 @@ public class SysUser {
 
     public List<Atta> userPhotos;
     public List<Social> socials;
+    public List<Group> groups;
 
     @Override
     public String toString() {
@@ -50,6 +51,7 @@ public class SysUser {
             ", remark='" + remark + '\'' +
             ", status='" + status + '\'' +
             ", socials='" + socials + '\'' +
+            ", groups='" + groups + '\'' +
             ", userPhotos='" + userPhotos + '\'' +
             ", createDate='" + createDate + '\'' +'}';
     }

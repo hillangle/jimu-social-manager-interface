@@ -30,6 +30,13 @@ public interface SysUserMapper{
     List<SysUser> queryUserList(Map<String, Object> map);
 
     /**
+     * 根据用户角色获取用户分页列表
+     * @param map
+     * @return SysUser
+     */
+    List<SysUser> queryUserPage(Map<String, Object> map);
+
+    /**
      * 根据用户名获取用户相关信息
      * @param map
      * @return SysUser

@@ -35,6 +35,16 @@ public class ActivationCodeServiceImpl implements IActivationCodeService {
     }
 
     @Override
+    public List<ActivationCode> queryActivationCodePage(Map<String, Object> map) {
+        try {
+           return activationCodeMapper.queryActivationCodePage(map);
+        } catch(Exception e){
+            log.error("获取公告列表失败,失败原因{}",e);
+            return null;
+        }
+    }
+
+    @Override
     public boolean updateActivationCode(ActivationCode activationCode) {
         try{
             activationCodeMapper.updateActivationCode(activationCode);
@@ -64,5 +74,10 @@ public class ActivationCodeServiceImpl implements IActivationCodeService {
     public List<ActivationCodeVO> cancelVerificationList(Map<String, Object> map) {
        List<ActivationCodeVO> activationCodeVOList = activationCodeMapper.cancelVerificationList(map);
         return activationCodeVOList;
+    }
+
+    @Override
+    public ActivationCode queryActivationCode(String code){
+        return activationCodeMapper.queryActivationCode(code);
     }
 }

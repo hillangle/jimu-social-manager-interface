@@ -26,7 +26,7 @@ public class SysActivityController {
     @ResponseBody
     public PageUtils getActivityList(@RequestParam Map<String, Object> params){
         Query query = new Query(params);
-        List<Activity> activityList = activityService.queryActivityList(query);
+        List<Activity> activityList = activityService.queryActivityPage(query);
         int total = activityService.count(query);
         PageUtils pageUtils = new PageUtils(activityList,total);
         return pageUtils;

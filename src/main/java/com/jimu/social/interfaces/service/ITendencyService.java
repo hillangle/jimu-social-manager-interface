@@ -27,6 +27,13 @@ public interface ITendencyService {
      * @param map
      * @return Tendency
      */
+    List<Tendency> queryTendencyPage(Map<String, Object> map);
+
+    /**
+     * 获取动态分页列表
+     * @param map
+     * @return Tendency
+     */
     TendencyUserZan queryZanByUserId(Map<String, Object> map);
 
     /**

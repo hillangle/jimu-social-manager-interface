@@ -44,6 +44,9 @@ public class UserController {
     @Autowired
     private INoticService noticService;
 
+    @Autowired
+    private IActivationCodeService activationCodeService;
+
     @PostMapping(value = "/getUserInfo", consumes = "application/json")
     public String getUserInfo(HttpServletRequest request){
         log.info("开始获取用户信息");
@@ -189,7 +192,7 @@ public class UserController {
                     attaService.saveUserAtta(userAtta);
                 }
                 result.setResultCode("true");
-                result.setResultData(JSONUtil.parseObj(userAtta).toString());
+                result.setResultData(JSONUtil.toJsonStr(JSONUtil.toJsonStr(userAtta).replace("\"", "\\\"")));
                 result.setResultMsg("用户编辑成功");
                 result.setHttpCode(200);
                 log.info("用户编辑成功");
@@ -216,7 +219,7 @@ public class UserController {
         try {
             List<Notic> noticList = noticService.queryNoticList(params);
             result.setResultCode("true");
-            result.setResultData(JSONUtil.parseObj(noticList).toString());
+            result.setResultData(JSONUtil.toJsonStr(JSONUtil.toJsonStr(noticList).replace("\"", "\\\"")));
             result.setResultMsg("获取公告列表成功");
             result.setHttpCode(200);
             log.info("获取公告列表成功");
@@ -254,6 +257,7 @@ public class UserController {
                 result.setHttpCode(200);
                 log.info("获取公告列表成功");
             }else{
+
                 result.setResultCode("false");
                 result.setResultData(null);
                 result.setResultMsg("获取短信验证码失败");
@@ -270,4 +274,32 @@ public class UserController {
         return result.toJSONString();
     }
 
+    @PostMapping("/checkCdKey")
+    public String checkCdKey(@RequestBody Map<String, Object> params){
+        log.info("开始检测激活码");
+        Result result = new Result();
+        try {
+            SysUser user = sysUserService.queryUserByAccount(params.get("account").toString());
+            ActivationCode activationCode = activationCodeService.queryActivationCode(params.get("password").toString());
+            if(activationCode == null){
+                result.setResultCode("false");
+                result.setResultData("未查询到激活码");
+                result.setResultMsg("获取激活码失败");
+                result.setHttpCode(200);
+            }else {
+                result.setResultCode("true");
+                result.setResultData("激活码可用");
+                result.setResultMsg("获取激活码成功");
+                result.setHttpCode(200);
+            }
+            log.info("获取激活码成功");
+        }catch(Exception e){
+            result.setResultCode("false");
+            result.setResultData(null);
+            result.setResultMsg("获取激活码失败");
+            result.setHttpCode(200);
+            log.error("获取激活码失败",e);
+        }
+        return result.toJSONString();
+    }
 }
