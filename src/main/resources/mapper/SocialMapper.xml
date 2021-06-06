@@ -32,13 +32,27 @@
         </where>
     </select>
 
+    <select id="querySocialPage" resultType="social">
+        select * from t_social
+        <where>
+            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
+            <if test="img != null and img != ''"> and img = #{img} </if>
+            <if test="name != null and name != ''"> and `name` = #{name} </if>
+            <if test="relation != null and relation != ''"> and relation = #{relation} </if>
+            <if test="status != null and status != ''"> and status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+        </where>
+        order by create_date desc
+        limit #{page} , #{limit}
+    </select>
+
     <select id="queryUserSocial" resultType="social">
         select
-               s.*
+        s.*
         from
-             t_social s
-                left join t_user_social us on s.unid = us.social_unid and us.status = 0 and s.status = 0
-                left join t_user u on us.user_unid = u.unid
+        t_social s
+        left join t_user_social us on s.unid = us.social_unid and us.status = 0 and s.status = 0
+        left join t_user u on us.user_unid = u.unid
         <where>
             <if test="account != null and account != ''"> and u.account = #{account} </if>
         </where>
@@ -61,9 +75,9 @@
             SELECT REPLACE(UUID(),'-','') FROM DUAL
         </selectKey>
         insert into t_social(
-            `unid`,`img`,`name`,`relation`,`status`,`create_date`
+        `unid`,`img`,`name`,`relation`,`status`,`create_date`
         ) values(
-            #{unid},#{img},#{name},#{relation},#{status},#{createDate}
+        #{unid},#{img},#{name},#{relation},#{status},#{createDate}
         )
     </insert>
 
@@ -72,9 +86,9 @@
             SELECT REPLACE(UUID(),'-','') FROM DUAL
         </selectKey>
         insert into t_user_social(
-            `unid`,`user_unid`,`social_unid`,`link`,`status`,`create_date`
+        `unid`,`user_unid`,`social_unid`,`link`,`status`,`create_date`
         ) values(
-            #{unid},#{userUnid},#{socialUnid},#{link},#{status},#{createDate}
+        #{unid},#{userUnid},#{socialUnid},#{link},#{status},#{createDate}
         )
     </insert>
 
@@ -104,20 +118,20 @@
             <if test="socialUnid != null and socialUnid != ''"> and `social_unid` = #{socialUnid} </if>
         </where>
     </update>
-    
-    
+
+
     <select id="selectUserSocialList" resultType="java.util.HashMap">
         SELECT
-            t.social_unid socialUnid,
-            s.name,
-            COUNT(t.unid) num
+        t.social_unid socialUnid,
+        s.name,
+        COUNT(t.unid) num
         FROM
-            t_user_social  t 
-            LEFT JOIN t_social s ON s.unid = t.social_unid
+        t_user_social  t
+        LEFT JOIN t_social s ON s.unid = t.social_unid
         <where>
             <if test="startDate != null and startDate != ''"> and t.create_date >= #{startDate} </if>
             <if test="endDate != null and endDate != ''"> and t.create_date &lt;= #{endDate} </if>
-            
+
             <if test="unid != null and unid != ''"> and t.unid = #{unid} </if>
             <if test="userUnid != null and userUnid != ''"> and t.user_unid = #{code} </if>
             <if test="socialUnid != null and socialUnid != ''"> and t.social_unid = #{status} </if>
@@ -126,6 +140,6 @@
             <if test="createDate != null and createDate != ''"> and t.create_date = #{createDate} </if>
         </where>
         GROUP BY
-            t.social_unid
+        t.social_unid
     </select>
 </mapper>
