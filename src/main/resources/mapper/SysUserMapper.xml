@@ -14,6 +14,10 @@
         <result column="remark"  property="remark" />
         <result column="status"  property="status" />
         <result column="create_date"  property="createDate" />
+
+        <collection property="groups" ofType="com.jimu.social.interfaces.domain.Group">
+            <result column="name"  property="name" />
+        </collection>
     </resultMap>
 
     <resultMap id="appUserInfo" type="com.jimu.social.interfaces.domain.SysUser">
@@ -68,6 +72,28 @@
         </where>
     </select>
 
+    <select id="queryUserPage" resultMap="sysUser">
+        select u.*,g.name from t_user u
+        left join t_user_group ug on u.unid = ug.user_id
+        left join t_group g on ug.group_id = g.unid
+        <where>
+            <if test="unid != null and unid != ''"> and u.unid = #{unid} </if>
+            <if test="userName != null and userName != ''"> and u.user_name like '%${userName}%' </if>
+            <if test="account != null and account != ''"> and u.account = #{account} </if>
+            <if test="password != null and password != ''"> and u.password = #{password} </if>
+            <if test="userRole != null and userRole != ''"> and u.user_role = #{userRole} </if>
+            <if test="sex != null and sex != '' and '0'.toString() neq sex.toString()"> and u.sex = #{sex} </if>
+            <if test="sex != null and sex != '' and '0'.toString() eq sex.toString()">  and (u.sex = '0' or u.sex is null or u.sex = '') </if>
+            <if test="telphone != null and telphone != ''"> and u.telphone like '%${telphone}%' </if>
+            <if test="birthday != null and birthday != ''"> and u.birthday = #{birthday} </if>
+            <if test="remark != null and remark != ''"> and u.remark = #{remark} </if>
+            <if test="status != null and status != ''"> and u.status = #{status} </if>
+            <if test="createDate != null and createDate != ''"> and u.create_date = #{createDate} </if>
+        </where>
+        order by u.create_date desc
+        limit #{page} , #{limit}
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from t_user
         <where>
@@ -92,8 +118,8 @@
         insert into t_user(
             `user_name`,`account`,`password`,`user_role`,`sex`,`telphone`,`birthday`,`remark`,`status`,`create_date`
         ) values(
-            #{userName},#{account},#{password},#{userRole},#{sex},#{telphone},#{birthday},#{remark},#{status},#{createDate}
-        )
+                    #{userName},#{account},#{password},#{userRole},#{sex},#{telphone},#{birthday},#{remark},#{status},#{createDate}
+                )
     </insert>
 
     <update id="updateSysUser" parameterType="com.jimu.social.interfaces.domain.SysUser">
@@ -115,16 +141,16 @@
 
     <select id="queryUserInfo" resultMap="appUserInfo">
         select
-               u.*,
-               a.*,
-               ua.atta_type as file_type,
-               s.*
+        u.*,
+        a.*,
+        ua.atta_type as file_type,
+        s.*
         from
-            t_user u
-                left join t_user_atta ua on u.unid = ua.user_unid and ua.status = 0
-                left join t_atta a on ua.atta_unid = a.unid and a.status = 0
-                left join t_user_social us on u.unid = us.user_unid and us.status = 0
-                left join t_social s on us.social_unid = s.unid and s.status = 0
+        t_user u
+        left join t_user_atta ua on u.unid = ua.user_unid and ua.status = 0
+        left join t_atta a on ua.atta_unid = a.unid and a.status = 0
+        left join t_user_social us on u.unid = us.user_unid and us.status = 0
+        left join t_social s on us.social_unid = s.unid and s.status = 0
         <where>
             <if test="unid != null and unid != ''"> and unid = #{unid} </if>
             <if test="userName != null and userName != ''"> and user_name = #{userName} </if>

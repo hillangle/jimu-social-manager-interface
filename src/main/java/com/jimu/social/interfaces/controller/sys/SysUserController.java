@@ -28,7 +28,7 @@ public class SysUserController {
     @ResponseBody
     public PageUtils getUserList(@RequestParam Map<String, Object> params){
         Query query = new Query(params);
-        List<SysUser> sysUserList = sysUserService.queryUserList(query);
+        List<SysUser> sysUserList = sysUserService.queryUserPage(query);
         int total = sysUserService.count(query);
         PageUtils pageUtils = new PageUtils(sysUserList,total);
         return pageUtils;

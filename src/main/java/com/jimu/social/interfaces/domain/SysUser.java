@@ -36,22 +36,24 @@ public class SysUser {
 
     public List<Atta> userPhotos;
     public List<Social> socials;
+    public List<Group> groups;
 
     @Override
     public String toString() {
         return "User{ unid=" + unid +
-            ", userName='" + userName + '\'' +
-            ", account='" + account + '\'' +
-            ", password='" + password + '\'' +
-            ", userRole='" + userRole + '\'' +
-            ", sex='" + sex + '\'' +
-            ", telphone='" + telphone + '\'' +
-            ", birthday='" + birthday + '\'' +
-            ", remark='" + remark + '\'' +
-            ", status='" + status + '\'' +
-            ", socials='" + socials + '\'' +
-            ", userPhotos='" + userPhotos + '\'' +
-            ", createDate='" + createDate + '\'' +'}';
+                ", userName='" + userName + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", userRole='" + userRole + '\'' +
+                ", sex='" + sex + '\'' +
+                ", telphone='" + telphone + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", remark='" + remark + '\'' +
+                ", status='" + status + '\'' +
+                ", socials='" + socials + '\'' +
+                ", groups='" + groups + '\'' +
+                ", userPhotos='" + userPhotos + '\'' +
+                ", createDate='" + createDate + '\'' +'}';
     }
 
 }
