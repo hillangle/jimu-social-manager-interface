@@ -32,20 +32,6 @@
         </where>
     </select>
 
-    <select id="querySocialPage" resultType="social">
-        select * from t_social
-        <where>
-            <if test="unid != null and unid != ''"> and unid = #{unid} </if>
-            <if test="img != null and img != ''"> and img = #{img} </if>
-            <if test="name != null and name != ''"> and `name` = #{name} </if>
-            <if test="relation != null and relation != ''"> and relation = #{relation} </if>
-            <if test="status != null and status != ''"> and status = #{status} </if>
-            <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
-        </where>
-        order by create_date desc
-        limit #{page} , #{limit}
-    </select>
-
     <select id="queryUserSocial" resultType="social">
         select
                s.*
@@ -86,9 +72,9 @@
             SELECT REPLACE(UUID(),'-','') FROM DUAL
         </selectKey>
         insert into t_user_social(
-            `unid`,`user_unid`,`social_unid`,`link`,`status`,`create_date`,`QRcode`
+            `unid`,`user_unid`,`social_unid`,`link`,`status`,`create_date`
         ) values(
-            #{unid},#{userUnid},#{socialUnid},#{link},#{status},#{createDate},#{QRcode}
+            #{unid},#{userUnid},#{socialUnid},#{link},#{status},#{createDate}
         )
     </insert>
 
@@ -110,7 +96,6 @@
             <if test="userUnid != null and userUnid != ''">user_unid = #{userUnid}, </if>
             <if test="socialUnid != null and socialUnid != ''">`social_unid` = #{socialUnid}, </if>
             <if test="link != null and link != ''">link = #{link}, </if>
-            <if test="QRcode != null and QRcode != ''">QRcode = #{QRcode}, </if>
             <if test="status != null and status != ''">status = #{status}, </if>
             <if test="createDate != null and createDate != ''">create_date = #{createDate}, </if>
         </trim>

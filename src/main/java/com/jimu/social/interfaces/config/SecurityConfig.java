@@ -46,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/sys/**/**").hasRole("SYSUSER")
             // 前台小程序仅拥有ROLE_APPUSER权限的用户可以访问
             .antMatchers("/app/index/getSmsCode").permitAll()
-            .antMatchers("/app/index/checkCdKey").permitAll()
             .antMatchers("/app/**").hasRole("APPUSER")
             // 其他都放行了
             .anyRequest().permitAll()
